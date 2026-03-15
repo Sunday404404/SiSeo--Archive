@@ -1,422 +1,339 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <title>RP Archive</title>
-
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f5f8fa;height:100vh;display:flex}
+body{margin:0;font-family:Arial;background:#f5f8fa;display:flex;height:100vh}
 
-.sidebar{width:260px;background:white;border-right:1px solid #e6ecf0;padding:14px;overflow-y:auto}
+#menu{width:260px;background:#0f1419;color:white;overflow:auto;padding:10px}
+.menuTitle{font-size:18px;margin:10px 0 5px 5px;color:#8899a6}
+.menuItem{padding:8px;border-radius:6px;cursor:pointer}
+.menuItem:hover{background:#1d9bf0}
 
-.menu-title{font-weight:bold;margin:14px 0 6px;color:#657786;display:flex;justify-content:space-between;align-items:center;cursor:grab}
+#chatArea{flex:1;display:flex;flex-direction:column}
 
-.menu-item{padding:8px 10px;border-radius:18px;cursor:pointer;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center}
-.menu-item:hover{background:#e8f5fd}
+#messages{flex:1;overflow:auto;padding:20px}
 
-.submenu{margin-left:10px}
+.tweet{display:flex;margin-bottom:15px}
+.avatar{width:48px;height:48px;border-radius:50%;margin-right:10px;object-fit:cover}
 
-.edit-btn{font-size:11px;color:#8899a6;margin-left:6px;cursor:pointer}
-.delete-btn{font-size:11px;color:#ff3b30;margin-left:6px;cursor:pointer}
+.name{font-weight:bold}
+.id{color:#536471;margin-left:5px}
+.date{color:#536471;font-size:12px}
+.text{margin-top:3px;white-space:pre-line}
 
-.main{flex:1;display:flex;flex-direction:column;height:100vh}
+#inputArea{border-top:1px solid #ccc;padding:10px;display:flex;gap:10px}
+#msg{flex:1}
 
-.header{background:white;border-bottom:1px solid #e6ecf0;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+#charSelect img{width:36px;height:36px;border-radius:50%;cursor:pointer}
 
-.search{border:1px solid #ccd6dd;padding:6px 10px;border-radius:20px}
+#profile{position:fixed;right:0;top:0;width:300px;height:100%;background:white;border-left:1px solid #ccc;padding:20px;display:none;overflow:auto}
 
-.messages{flex:1;overflow-y:auto;background:white}
-
-.tweet{display:flex;padding:14px 16px;border-bottom:1px solid #e6ecf0}
-.avatar{width:48px;height:48px;border-radius:50%;margin-right:10px;object-fit:cover;cursor:pointer}
-.tweet-body{flex:1}
-
-.tweet-header{display:flex;align-items:center;font-size:14px}
-.name{font-weight:bold;margin-right:6px}
-.handle{color:#657786;margin-right:6px}
-.time{color:#657786;font-size:12px}
-
-.tweet-text{margin-top:4px;line-height:1.4;white-space:pre-wrap}
-.tweet-img{margin-top:8px;max-width:420px;border-radius:14px}
-
-.actions{margin-top:6px;font-size:12px;color:#657786}
-.actions span{margin-right:12px;cursor:pointer}
-.actions span:hover{color:#1da1f2}
-
-.input-area{background:white;border-top:1px solid #e6ecf0;padding:10px;display:flex;flex-direction:column}
-
-.char-row{display:flex;margin-bottom:6px}
-.char{width:36px;height:36px;border-radius:50%;margin-right:6px;cursor:pointer;border:2px solid transparent;object-fit:cover}
-.char.selected{border:2px solid #1da1f2}
-.add-char{width:36px;height:36px;border-radius:50%;border:2px dashed #aaa;display:flex;align-items:center;justify-content:center;cursor:pointer}
-
-.input-row{display:flex;align-items:center}
-.chat-input{flex:1;border:1px solid #ccd6dd;border-radius:20px;padding:8px 12px}
-.send{margin-left:6px;border:none;background:#1da1f2;color:white;padding:8px 14px;border-radius:20px;cursor:pointer}
-
-.profile{
-position:fixed;
-right:0;
-top:0;
-width:320px;
-height:100%;
-background:white;
-border-left:1px solid #e6ecf0;
-padding:20px;
-display:none;
-flex-direction:column
-}
-
-.profile img{width:90px;height:90px;border-radius:50%;object-fit:cover;margin-bottom:10px}
-.profile-name{font-size:18px;font-weight:bold}
-.profile-handle{color:#657786;margin-bottom:20px}
+button{cursor:pointer}
 
 </style>
 </head>
-
 <body>
 
-<div class="sidebar" id="sidebar"></div>
-
-<div class="main">
-
-<div class="header">
-<span id="roomTitle">채팅</span>
-<input id="searchBox" class="search" placeholder="대화 검색" oninput="renderMessages()">
+<div id="menu">
+<button onclick="addMenu()">+ 메뉴</button>
+<div id="menuList"></div>
 </div>
 
-<div class="messages" id="messages"></div>
+<div id="chatArea">
 
-<div class="input-area">
+<div id="messages"></div>
 
-<div class="char-row" id="charPicker"></div>
-
-<div class="input-row">
-<input id="chatInput" class="chat-input" placeholder="무슨 일이 일어나고 있나요?">
-<input type="file" id="imageInput">
-<button class="send" onclick="sendMessage()">Post</button>
+<div id="inputArea">
+<select id="char"></select>
+<input id="msg" placeholder="채팅 입력">
+<button onclick="sendMsg()">전송</button>
+<button onclick="bulkUpload()">대화 업로드</button>
 </div>
 
 </div>
 
-</div>
-
-<div class="profile" id="profile">
-<img id="profileImg">
-<div class="profile-name" id="profileName"></div>
-<div class="profile-handle" id="profileHandle"></div>
-<button onclick="closeProfile()">닫기</button>
-</div>
+<div id="profile"></div>
 
 <script>
 
-const firebaseConfig={
-apiKey:"AIzaSyA5QG4OWzXc2aTpFqxUwJERkC3_gUmCIgY",
-authDomain:"siseo-archive.firebaseapp.com",
-databaseURL:"https://siseo-archive-default-rtdb.firebaseio.com",
-projectId:"siseo-archive",
-storageBucket:"siseo-archive.firebasestorage.app",
-messagingSenderId:"450409807533",
-appId:"1:450409807533:web:d7cc1869fab0043b24d024"
+let menus=JSON.parse(localStorage.getItem("menus")||"[]")
+let chars=JSON.parse(localStorage.getItem("chars")||"[]")
+let rooms=JSON.parse(localStorage.getItem("rooms")||"{}")
+let currentRoom=null
+
+function save(){
+localStorage.setItem("menus",JSON.stringify(menus))
+localStorage.setItem("chars",JSON.stringify(chars))
+localStorage.setItem("rooms",JSON.stringify(rooms))
 }
-
-firebase.initializeApp(firebaseConfig)
-const db=firebase.database()
-
-let currentRoom=""
-let roomMessages=[]
-let currentChar=null
-
-let characters=JSON.parse(localStorage.getItem("rp_characters")||"[]")
-
-let menus=JSON.parse(localStorage.getItem("rp_menus")||`[
-{"name":"성장 전","rooms":["기숙사","학교"]},
-{"name":"성장 후","rooms":["회사","집"]}
-]`)
-
-function saveMenus(){localStorage.setItem("rp_menus",JSON.stringify(menus))}
-
-let dragIndex=null
 
 function renderMenus(){
-
-const box=document.getElementById("sidebar")
+const box=document.getElementById("menuList")
 box.innerHTML=""
 
-menus.forEach((m,i)=>{
+menus.forEach((m,mi)=>{
 
 const title=document.createElement("div")
-title.className="menu-title"
-title.draggable=true
-
-title.ondragstart=()=>dragIndex=i
-
-title.ondragover=e=>e.preventDefault()
-
-title.ondrop=()=>{
-const item=menus.splice(dragIndex,1)[0]
-menus.splice(i,0,item)
-saveMenus()
-renderMenus()
-}
-
-title.innerHTML=`
-<span>${m.name}</span>
-<span>
-<span class="edit-btn" onclick="renameMenu(${i})">이름</span>
-<span class="edit-btn" onclick="addRoom(${i})">+방</span>
-<span class="delete-btn" onclick="deleteMenu(${i})">삭제</span>
-</span>`
-
+title.className="menuTitle"
+title.textContent=m.name
 box.appendChild(title)
-
-const sub=document.createElement("div")
-sub.className="submenu"
 
 m.rooms.forEach((r,ri)=>{
 
-const room=document.createElement("div")
-room.className="menu-item"
-room.innerHTML=`
-<span onclick="openRoom('${m.name}_${r}')">${r}</span>
-<span>
-<span class="edit-btn" onclick="renameRoom(${i},${ri})">수정</span>
-<span class="delete-btn" onclick="deleteRoom(${i},${ri})">삭제</span>
-</span>`
+const d=document.createElement("div")
+d.className="menuItem"
+d.textContent=r
 
-sub.appendChild(room)
+if(rooms[r] && rooms[r].new) d.textContent="🆕 "+r
 
-})
 
-box.appendChild(sub)
+d.onclick=()=>openRoom(r)
+
+const del=document.createElement("button")
+del.textContent="삭제"
+del.onclick=(e)=>{
+e.stopPropagation()
+m.rooms.splice(ri,1)
+delete rooms[r]
+save()
+renderMenus()
+}
+
+d.appendChild(del)
+
+box.appendChild(d)
 
 })
 
 const add=document.createElement("button")
-add.innerText="+ 메뉴 추가"
-add.onclick=addMenu
+add.textContent="+방"
+add.onclick=()=>{
+const name=prompt("방 이름")
+m.rooms.push(name)
+rooms[name]=[]
+save()
+renderMenus()
+}
+
 box.appendChild(add)
+
+})
 
 }
 
 function addMenu(){
 const name=prompt("메뉴 이름")
-if(!name) return
 menus.push({name:name,rooms:[]})
-saveMenus()
+save()
 renderMenus()
 }
 
-function renameMenu(i){
-const n=prompt("새 메뉴 이름",menus[i].name)
-if(!n) return
-menus[i].name=n
-saveMenus()
+function openRoom(r){
+currentRoom=r
+if(rooms[r]) rooms[r].new=false
 renderMenus()
+renderMsgs()
 }
 
-function deleteMenu(i){
-if(!confirm("메뉴 삭제?")) return
-menus.splice(i,1)
-saveMenus()
-renderMenus()
-}
+function renderMsgs(){
 
-function addRoom(i){
-const r=prompt("방 이름")
-if(!r) return
-menus[i].rooms.push(r)
-saveMenus()
-renderMenus()
-}
-
-function renameRoom(mi,ri){
-const n=prompt("새 방 이름",menus[mi].rooms[ri])
-if(!n) return
-menus[mi].rooms[ri]=n
-saveMenus()
-renderMenus()
-}
-
-function deleteRoom(mi,ri){
-if(!confirm("방 삭제?")) return
-menus[mi].rooms.splice(ri,1)
-saveMenus()
-renderMenus()
-}
-
-function openRoom(room){
-currentRoom=room
-roomMessages=[]
-document.getElementById("roomTitle").innerText=room
-listenMessages()
-}
-
-function saveCharacters(){
-localStorage.setItem("rp_characters",JSON.stringify(characters))
-}
-
-function renderCharacters(){
-const box=document.getElementById("charPicker")
+const box=document.getElementById("messages")
 box.innerHTML=""
 
-characters.forEach(c=>{
-const img=document.createElement("img")
-img.src=c.avatar
-img.className="char"
-if(currentChar===c.name) img.classList.add("selected")
-img.onclick=()=>{currentChar=c.name;renderCharacters()}
-box.appendChild(img)
-})
+(rooms[currentRoom]||[]).forEach((m,i)=>{
 
-const add=document.createElement("div")
-add.className="add-char"
-add.innerText="+"
-add.onclick=addCharacter
-box.appendChild(add)
+const d=document.createElement("div")
+d.className="tweet"
+
+const img=document.createElement("img")
+img.className="avatar"
+img.src=m.avatar
+img.onclick=()=>showProfile(m.char)
+
+const body=document.createElement("div")
+
+body.innerHTML=`
+<div>
+<span class="name">${m.char}</span>
+<span class="id">@${m.id}</span>
+</div>
+<div class="date">${m.date}</div>
+<div class="text">${m.text}</div>
+`
+
+const edit=document.createElement("button")
+edit.textContent="수정"
+edit.onclick=()=>{
+const t=prompt("수정",m.text)
+m.text=t
+save()
+renderMsgs()
 }
 
-function addCharacter(){
+const del=document.createElement("button")
+del.textContent="삭제"
+del.onclick=()=>{
+rooms[currentRoom].splice(i,1)
+save()
+renderMsgs()
+}
+
+body.appendChild(edit)
+body.appendChild(del)
+
+
+d.appendChild(img)
+d.appendChild(body)
+
+box.appendChild(d)
+
+})
+
+}
+
+function sendMsg(){
+
+const text=document.getElementById("msg").value
+const c=chars[document.getElementById("char").value]
+
+const date=new Date()
+
+rooms[currentRoom].push({
+char:c.name,
+id:c.id,
+avatar:c.avatar,
+text:text,
+date:`${date.getMonth()+1}월 ${date.getDate()}일`
+})
+
+save()
+renderMsgs()
+
+}
+
+function bulkUpload(){
+
+const raw=prompt("대화 전체 붙여넣기")
+
+const blocks=raw.split("\n\n")
+
+blocks.forEach(b=>{
+
+const l=b.split("\n")
+
+if(l.length>=4){
+
+rooms[currentRoom].push({
+char:l[0],
+id:l[1].replace("@",""),
+date:l[2],
+text:l.slice(3).join("\n"),
+avatar:findAvatar(l[0])
+
+})
+
+}
+
+})
+
+save()
+renderMsgs()
+
+}
+
+function findAvatar(name){
+
+const c=chars.find(c=>c.name==name)
+return c?c.avatar:""
+
+}
+
+function showProfile(name){
+
+const c=chars.find(c=>c.name==name)
+
+const box=document.getElementById("profile")
+box.style.display="block"
+
+box.innerHTML=`
+<h2>${c.name}</h2>
+<img src="${c.avatar}" width="100">
+<p>@${c.id}</p>
+<textarea id="bio">${c.bio||""}</textarea>
+<textarea id="rel">${c.rel||""}</textarea>
+<button onclick="saveProfile('${c.name}')">저장</button>
+<button onclick="deleteChar('${c.name}')">캐릭터 삭제</button>
+`
+
+}
+
+function saveProfile(n){
+
+const c=chars.find(c=>c.name==n)
+
+c.bio=document.getElementById("bio").value
+c.rel=document.getElementById("rel").value
+
+save()
+
+}
+
+function deleteChar(n){
+chars=chars.filter(c=>c.name!=n)
+save()
+loadChars()
+}
+
+function loadChars(){
+
+const s=document.getElementById("char")
+s.innerHTML=""
+
+chars.forEach((c,i)=>{
+
+const o=document.createElement("option")
+o.value=i
+o.textContent=c.name
+
+s.appendChild(o)
+
+})
+
+}
+
+function addChar(){
+
 const name=prompt("캐릭터 이름")
-if(!name) return
+const id=prompt("캐릭터 아이디")
 
 const input=document.createElement("input")
 input.type="file"
 
-input.onchange=()=>{
-const file=input.files[0]
+input.onchange=e=>{
+
 const reader=new FileReader()
-reader.onload=e=>{
-characters.push({name,avatar:e.target.result})
-currentChar=name
-saveCharacters()
-renderCharacters()
+
+reader.onload=()=>{
+
+chars.push({name:name,id:id,avatar:reader.result})
+save()
+loadChars()
+
 }
-reader.readAsDataURL(file)
+
+reader.readAsDataURL(e.target.files[0])
+
 }
 
 input.click()
+
 }
 
-function showProfile(name){
-const c=characters.find(x=>x.name===name)
-if(!c) return
-
-document.getElementById("profileImg").src=c.avatar
-
-document.getElementById("profileName").innerText=c.name
-
-document.getElementById("profileHandle").innerText="@"+c.name
-
-document.getElementById("profile").style.display="flex"
-}
-
-function closeProfile(){
-document.getElementById("profile").style.display="none"
-}
-
-function sendMessage(){
-
-const text=document.getElementById("chatInput").value
-const file=document.getElementById("imageInput").files[0]
-
-if(!currentChar||!currentRoom) return
-
-if(file){
-const reader=new FileReader()
-reader.onload=e=>pushMessage(text,e.target.result)
-reader.readAsDataURL(file)
-}else pushMessage(text,null)
-
-chatInput.value=""
-imageInput.value=""
-}
-
-function pushMessage(text,img){
-const msg={char:currentChar,text:text,image:img,time:Date.now()}
-db.ref("rooms/"+currentRoom).push(msg)
-}
-
-function listenMessages(){
-const box=document.getElementById("messages")
-box.innerHTML=""
-
-const ref=db.ref("rooms/"+currentRoom)
-ref.off()
-
-ref.on("child_added",snap=>{
-const m=snap.val()
-m.id=snap.key
-roomMessages.push(m)
-renderMessages()
-})
-}
-
-function renderMessages(){
-const box=document.getElementById("messages")
-box.innerHTML=""
-
-const search=document.getElementById("searchBox").value.toLowerCase()
-
-roomMessages.forEach(m=>{
-
-if(search && !(m.text||"").toLowerCase().includes(search)) return
-
-const char=characters.find(c=>c.name===m.char)
-const avatar=char?char.avatar:""
-
-const d=new Date(m.time).toLocaleDateString()
-
-let imgHTML=""
-if(m.image) imgHTML=`<img class="tweet-img" src="${m.image}">`
-
-const div=document.createElement("div")
-div.className="tweet"
-
-div.innerHTML=`
-<img class="avatar" src="${avatar}" onclick="showProfile('${m.char}')">
-<div class="tweet-body">
-<div class="tweet-header">
-<span class="name">${m.char}</span>
-<span class="handle">@${m.char}</span>
-<span class="time">${d}</span>
-</div>
-<div class="tweet-text">${m.text||""}</div>
-${imgHTML}
-<div class="actions">
-<span onclick="editMsg('${m.id}','${m.text||""}')">수정</span>
-<span onclick="deleteMsg('${m.id}')">삭제</span>
-</div>
-</div>`
-
-box.appendChild(div)
-
-})
-}
-
-function deleteMsg(id){
-if(!confirm("삭제할까요?")) return
-
-db.ref("rooms/"+currentRoom+"/"+id).remove()
-location.reload()
-}
-
-function editMsg(id,text){
-const t=prompt("수정",text)
-if(t===null) return
-
-db.ref("rooms/"+currentRoom+"/"+id).update({text:t})
-location.reload()
-}
-
+loadChars()
 renderMenus()
-renderCharacters()
 
 </script>
-
 </body>
 </html>
