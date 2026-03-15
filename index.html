@@ -112,23 +112,53 @@
   #btn-bulk-open { background: var(--sidebar-hover); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); padding: 8px 12px; font-size: 12px; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: all .15s; }
   #btn-bulk-open:hover { border-color: var(--accent-soft); color: var(--text-primary); }
 
-  /* ── PROFILE ── */
-  #profile-panel { width: 280px; min-width: 280px; background: var(--sidebar-bg); border-left: 1px solid var(--border); display: none; flex-direction: column; overflow-y: auto; }
-  #profile-panel.open { display: flex; }
-  .profile-header { padding: 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-  .profile-header h3 { font-size: 14px; font-weight: 600; }
-  #btn-close-profile { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 4px; border-radius: 6px; font-size: 16px; transition: color .15s; }
-  #btn-close-profile:hover { color: var(--text-primary); }
-  .profile-body { padding: 16px; }
-  .profile-avatar { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); margin-bottom: 12px; }
-  .profile-name { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
-  .profile-id-text { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
-  .profile-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; margin-top: 12px; }
-  .profile-textarea { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); padding: 8px 10px; font-size: 12px; font-family: 'Noto Sans KR', sans-serif; resize: vertical; min-height: 70px; outline: none; transition: border-color .2s; }
-  .profile-textarea:focus { border-color: var(--accent-soft); }
-  #btn-save-profile { width: 100%; margin-top: 12px; background: var(--accent-soft); border: none; border-radius: 8px; color: white; padding: 9px; font-size: 13px; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: background .15s; }
-  #btn-save-profile:hover { background: var(--accent); }
-  #btn-delete-char { width: 100%; margin-top: 6px; background: none; border: 1px solid var(--border); border-radius: 8px; color: var(--danger); padding: 9px; font-size: 13px; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: all .15s; }
+  /* ── CHAR PANEL ── */
+  #char-panel { width: 340px; min-width: 340px; background: var(--sidebar-bg); border-left: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
+  .char-panel-header { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+  .char-panel-header h3 { font-size: 14px; font-weight: 600; }
+  .char-panel-tabs { display: flex; gap: 4px; }
+  .char-tab { background: none; border: none; padding: 5px 10px; border-radius: 6px; font-size: 12px; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; color: var(--text-muted); transition: all .15s; }
+  .char-tab.active { background: var(--sidebar-active); color: var(--accent); font-weight: 500; }
+  .char-tab:hover:not(.active) { background: var(--sidebar-hover); color: var(--text-primary); }
+
+  /* 목록 뷰 */
+  #char-list-view { flex: 1; overflow-y: auto; padding: 10px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .char-card { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 10px; cursor: pointer; transition: background .15s; border: 1px solid transparent; }
+  .char-card:hover { background: var(--sidebar-hover); border-color: var(--border); }
+  .char-card.active { background: var(--sidebar-active); border-color: var(--accent-soft); }
+  .char-card-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); flex-shrink: 0; }
+  .char-card-info { flex: 1; min-width: 0; }
+  .char-card-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+  .char-card-id { font-size: 11px; color: var(--text-muted); }
+  .char-card-preview { font-size: 11px; color: var(--text-secondary); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* 상세 뷰 */
+  #char-detail-view { flex: 1; overflow-y: auto; display: none; flex-direction: column; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  #char-detail-view.show { display: flex; }
+  .char-detail-back { display: flex; align-items: center; gap: 6px; padding: 10px 16px; cursor: pointer; color: var(--text-muted); font-size: 12px; border-bottom: 1px solid var(--border); transition: color .15s; flex-shrink: 0; }
+  .char-detail-back:hover { color: var(--accent); }
+  .char-detail-hero { padding: 20px 16px 16px; display: flex; gap: 14px; align-items: flex-start; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .char-detail-avatar { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 3px solid var(--border); flex-shrink: 0; }
+  .char-detail-meta { flex: 1; }
+  .char-detail-name { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 2px; }
+  .char-detail-id { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+  .char-detail-edit-avatar { font-size: 11px; color: var(--accent-soft); cursor: pointer; text-decoration: underline; display: inline-block; }
+  .char-detail-body { flex: 1; padding: 16px; overflow-y: auto; }
+  .char-field { margin-bottom: 18px; }
+  .char-field-label { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; }
+  .char-field-label span { color: var(--accent-soft); font-size: 10px; font-weight: 400; cursor: pointer; text-transform: none; letter-spacing: 0; }
+  .char-field-text { font-size: 13px; line-height: 1.7; color: var(--text-primary); white-space: pre-wrap; word-break: break-word; background: var(--bg); border-radius: 8px; padding: 10px 12px; min-height: 40px; cursor: pointer; border: 1px solid transparent; transition: border-color .15s; }
+  .char-field-text:hover { border-color: var(--border); }
+  .char-field-text.empty { color: var(--text-muted); font-style: italic; }
+  .char-field-textarea { width: 100%; background: var(--bg); border: 1px solid var(--accent-soft); border-radius: 8px; color: var(--text-primary); padding: 10px 12px; font-size: 13px; font-family: 'Noto Sans KR', sans-serif; resize: vertical; outline: none; line-height: 1.7; min-height: 100px; display: none; }
+  .char-field-textarea.show { display: block; }
+  .char-field-actions { display: flex; gap: 6px; margin-top: 6px; display: none; }
+  .char-field-actions.show { display: flex; }
+  .field-save-btn { background: var(--accent-soft); border: none; border-radius: 6px; color: white; padding: 5px 12px; font-size: 11px; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: background .15s; }
+  .field-save-btn:hover { background: var(--accent); }
+  .field-cancel-btn { background: var(--sidebar-hover); border: 1px solid var(--border); border-radius: 6px; color: var(--text-muted); padding: 5px 10px; font-size: 11px; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; }
+  .char-detail-footer { padding: 12px 16px; border-top: 1px solid var(--border); flex-shrink: 0; }
+  #btn-delete-char { width: 100%; background: none; border: 1px solid var(--border); border-radius: 8px; color: var(--danger); padding: 8px; font-size: 12px; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: all .15s; }
   #btn-delete-char:hover { background: #d94f4f10; border-color: var(--danger); }
 
   /* ── MODAL ── */
@@ -279,10 +309,41 @@
   </div>
 </div>
 
-<!-- PROFILE -->
-<div id="profile-panel">
-  <div class="profile-header"><h3>캐릭터 정보</h3><button id="btn-close-profile">✕</button></div>
-  <div class="profile-body" id="profile-body"></div>
+<!-- CHAR PANEL -->
+<div id="char-panel">
+  <div class="char-panel-header">
+    <h3>캐릭터</h3>
+    <div class="char-panel-tabs">
+      <button class="char-tab active" id="tab-list">목록</button>
+      <button class="char-tab" id="tab-detail" style="display:none">상세</button>
+    </div>
+  </div>
+  <!-- 목록 뷰 -->
+  <div id="char-list-view">
+    <div id="char-cards"></div>
+  </div>
+  <!-- 상세 뷰 -->
+  <div id="char-detail-view">
+    <div class="char-detail-back" id="btn-back-to-list">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      목록으로
+    </div>
+    <div class="char-detail-hero">
+      <div style="position:relative">
+        <img class="char-detail-avatar" id="detail-avatar" src="" alt="">
+        <label class="char-detail-edit-avatar" for="detail-avatar-file" style="display:block;text-align:center;margin-top:4px">이미지 변경</label>
+        <input type="file" id="detail-avatar-file" accept="image/*" style="display:none">
+      </div>
+      <div class="char-detail-meta">
+        <div class="char-detail-name" id="detail-name"></div>
+        <div class="char-detail-id" id="detail-id"></div>
+      </div>
+    </div>
+    <div class="char-detail-body" id="detail-fields"></div>
+    <div class="char-detail-footer">
+      <button id="btn-delete-char">캐릭터 삭제</button>
+    </div>
+  </div>
 </div>
 
 <script type="module">
@@ -610,31 +671,147 @@ async function sendMsg() {
 function loadChars() {
   var s = document.getElementById("char-select"); s.innerHTML = "";
   chars.forEach(function(c, i) { var o = document.createElement("option"); o.value = i; o.textContent = c.name; s.appendChild(o); });
+  renderCharList();
 }
 function findAvatar(name) { var c = chars.find(function(c) { return c.name === name; }); return c ? c.avatar : ""; }
+var blankAvatar = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Crect width='44' height='44' rx='22' fill='%23e2ddd8'/%3E%3C/svg%3E";
 
-function showProfile(name) {
-  var c = chars.find(function(c) { return c.name === name; }); if (!c) return;
-  currentProfileChar = name;
-  document.getElementById("profile-panel").classList.add("open");
-  var body = document.getElementById("profile-body");
-  body.innerHTML =
-    '<img class="profile-avatar" src="' + (c.avatar||'') + '" onerror="this.src=\'data:image/svg+xml,%3Csvg xmlns=\\\'http://www.w3.org/2000/svg\\\' width=\\\'72\\\' height=\\\'72\\\'%3E%3Crect width=\\\'72\\\' height=\\\'72\\\' rx=\\\'36\\\' fill=\\\'%23e2ddd8\\\'/%3E%3C/svg%3E\'">' +
-    '<div class="profile-name">' + c.name + '</div><div class="profile-id-text">@' + c.id + '</div>' +
-    '<div class="profile-label">바이오</div><textarea class="profile-textarea" id="prof-bio">' + (c.bio||"") + '</textarea>' +
-    '<div class="profile-label">관계</div><textarea class="profile-textarea" id="prof-rel">' + (c.rel||"") + '</textarea>' +
-    '<button id="btn-save-profile">저장</button><button id="btn-delete-char">캐릭터 삭제</button>';
-  document.getElementById("btn-save-profile").addEventListener("click", async function() {
-    var c2 = chars.find(function(c) { return c.name === currentProfileChar; }); if (!c2) return;
-    c2.bio = document.getElementById("prof-bio").value; c2.rel = document.getElementById("prof-rel").value;
-    await saveChars(); toast("저장됐어요");
-  });
-  document.getElementById("btn-delete-char").addEventListener("click", async function() {
-    if (!confirm("'" + currentProfileChar + "' 캐릭터를 삭제할까요?")) return;
-    chars = chars.filter(function(c) { return c.name !== currentProfileChar; });
-    await saveChars(); loadChars(); document.getElementById("profile-panel").classList.remove("open"); toast("캐릭터가 삭제됐어요");
+// ── 캐릭터 목록 렌더 ──
+function renderCharList() {
+  var box = document.getElementById("char-cards"); box.innerHTML = "";
+  if (!chars.length) {
+    box.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-muted);font-size:13px">아직 캐릭터가 없어요<br>하단 버튼으로 추가하세요</div>';
+    return;
+  }
+  chars.forEach(function(c) {
+    var card = document.createElement("div");
+    card.className = "char-card" + (currentProfileChar === c.name ? " active" : "");
+    var bioPreview = (c.bio || "").split("\n")[0].slice(0, 40) || "설정 없음";
+    card.innerHTML =
+      '<img class="char-card-avatar" src="' + (c.avatar || blankAvatar) + '" onerror="this.src=\'' + blankAvatar + '\'">' +
+      '<div class="char-card-info">' +
+        '<div class="char-card-name">' + c.name + '</div>' +
+        '<div class="char-card-id">@' + c.id + '</div>' +
+        '<div class="char-card-preview">' + bioPreview + '</div>' +
+      '</div>';
+    card.addEventListener("click", function() { showCharDetail(c.name); });
+    box.appendChild(card);
   });
 }
+
+// ── 캐릭터 상세 ──
+// 설정 필드 정의
+var CHAR_FIELDS = [
+  { key: "bio",  label: "바이오 / 소개" },
+  { key: "age",  label: "나이 / 생년월일" },
+  { key: "appear", label: "외모" },
+  { key: "personality", label: "성격" },
+  { key: "background", label: "배경 / 과거" },
+  { key: "ability", label: "능력 / 특기" },
+  { key: "rel",  label: "인물 관계" },
+  { key: "note", label: "기타 메모" }
+];
+
+function showCharDetail(name) {
+  var c = chars.find(function(c) { return c.name === name; }); if (!c) return;
+  currentProfileChar = name;
+
+  // 탭 전환
+  document.getElementById("tab-detail").style.display = "";
+  document.getElementById("tab-detail").classList.add("active");
+  document.getElementById("tab-list").classList.remove("active");
+  document.getElementById("char-list-view").style.display = "none";
+  document.getElementById("char-detail-view").classList.add("show");
+
+  // 헤더
+  var av = document.getElementById("detail-avatar");
+  av.src = c.avatar || blankAvatar;
+  av.onerror = function() { this.src = blankAvatar; };
+  document.getElementById("detail-name").textContent = c.name;
+  document.getElementById("detail-id").textContent = "@" + c.id;
+
+  // 아바타 변경
+  document.getElementById("detail-avatar-file").onchange = null;
+  document.getElementById("detail-avatar-file").addEventListener("change", async function() {
+    var file = this.files[0]; if (!file) return;
+    var avatar = await new Promise(function(res) { var r = new FileReader(); r.onload = function() { res(r.result); }; r.readAsDataURL(file); });
+    var c2 = chars.find(function(c) { return c.name === currentProfileChar; }); if (!c2) return;
+    c2.avatar = avatar;
+    document.getElementById("detail-avatar").src = avatar;
+    await saveChars(); renderCharList(); toast("아바타가 변경됐어요");
+  });
+
+  // 필드 렌더
+  var fieldsBox = document.getElementById("detail-fields");
+  fieldsBox.innerHTML = "";
+  CHAR_FIELDS.forEach(function(f) {
+    var val = c[f.key] || "";
+    var fieldDiv = document.createElement("div"); fieldDiv.className = "char-field";
+
+    var label = document.createElement("div"); label.className = "char-field-label";
+    label.innerHTML = f.label + '<span data-edit="' + f.key + '">수정</span>';
+
+    var display = document.createElement("div");
+    display.className = "char-field-text" + (val ? "" : " empty");
+    display.textContent = val || "클릭하여 입력...";
+    display.dataset.key = f.key;
+
+    var ta = document.createElement("textarea");
+    ta.className = "char-field-textarea";
+    ta.value = val;
+    ta.placeholder = f.label + " 입력...";
+
+    var btnRow = document.createElement("div"); btnRow.className = "char-field-actions";
+    var saveBtn = document.createElement("button"); saveBtn.className = "field-save-btn"; saveBtn.textContent = "저장";
+    var cancelBtn = document.createElement("button"); cancelBtn.className = "field-cancel-btn"; cancelBtn.textContent = "취소";
+    btnRow.appendChild(saveBtn); btnRow.appendChild(cancelBtn);
+
+    function enterEdit() {
+      display.style.display = "none"; ta.classList.add("show"); btnRow.classList.add("show");
+      ta.style.height = "auto"; ta.style.height = Math.max(100, ta.scrollHeight) + "px";
+      ta.focus();
+    }
+    function exitEdit() {
+      display.style.display = ""; ta.classList.remove("show"); btnRow.classList.remove("show");
+    }
+
+    display.addEventListener("click", enterEdit);
+    label.querySelector("span").addEventListener("click", enterEdit);
+
+    saveBtn.addEventListener("click", async function() {
+      var c2 = chars.find(function(c) { return c.name === currentProfileChar; }); if (!c2) return;
+      c2[f.key] = ta.value;
+      display.textContent = ta.value || "클릭하여 입력...";
+      display.className = "char-field-text" + (ta.value ? "" : " empty");
+      exitEdit(); await saveChars(); renderCharList(); toast("저장됐어요");
+    });
+    cancelBtn.addEventListener("click", function() { ta.value = c[f.key] || ""; exitEdit(); });
+
+    fieldDiv.appendChild(label); fieldDiv.appendChild(display); fieldDiv.appendChild(ta); fieldDiv.appendChild(btnRow);
+    fieldsBox.appendChild(fieldDiv);
+  });
+
+  // 삭제 버튼
+  document.getElementById("btn-delete-char").onclick = async function() {
+    if (!confirm("'" + currentProfileChar + "' 캐릭터를 삭제할까요?")) return;
+    chars = chars.filter(function(c) { return c.name !== currentProfileChar; });
+    await saveChars(); loadChars(); backToList(); toast("캐릭터가 삭제됐어요");
+  };
+
+  renderCharList();
+}
+
+function backToList() {
+  currentProfileChar = null;
+  document.getElementById("tab-detail").style.display = "none";
+  document.getElementById("tab-list").classList.add("active");
+  document.getElementById("tab-detail").classList.remove("active");
+  document.getElementById("char-list-view").style.display = "";
+  document.getElementById("char-detail-view").classList.remove("show");
+  renderCharList();
+}
+
+function showProfile(name) { showCharDetail(name); }
 
 // ── 이벤트 연결 ──
 document.getElementById("search-box").addEventListener("input", function(e) { renderMenus(e.target.value); });
@@ -728,8 +905,9 @@ document.getElementById("btn-confirmBulk").addEventListener("click", async funct
 document.getElementById("btn-send").addEventListener("click", sendMsg);
 document.getElementById("msg-input").addEventListener("keydown", function(e) { if (e.key==="Enter") sendMsg(); });
 
-// 프로필 닫기
-document.getElementById("btn-close-profile").addEventListener("click", function() { document.getElementById("profile-panel").classList.remove("open"); });
+// 목록으로 돌아가기
+document.getElementById("btn-back-to-list").addEventListener("click", backToList);
+document.getElementById("tab-list").addEventListener("click", backToList);
 
 // 모달 외부 클릭
 document.querySelectorAll(".modal-overlay").forEach(function(o) {
