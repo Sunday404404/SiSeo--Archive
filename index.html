@@ -215,12 +215,69 @@
   #loading{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;z-index:300;}
   .spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;}
   @keyframes spin{to{transform:rotate(360deg);}}
+
+  /* ── 모바일 햄버거 ── */
+  #mob-overlay{display:none;position:fixed;inset:0;background:#0004;z-index:39;}
+  #mob-hamburger{display:none;background:none;border:none;cursor:pointer;padding:6px;color:var(--text-primary);flex-shrink:0;}
+
+  @media(max-width:640px){
+    #mob-hamburger{display:flex;align-items:center;justify-content:center;}
+
+    /* 사이드바 → 슬라이드 오버레이 */
+    #sidebar{
+      position:fixed;top:0;left:0;bottom:0;
+      width:82vw;max-width:300px;min-width:unset;
+      z-index:40;
+      transform:translateX(-110%);
+      transition:transform .25s ease;
+      box-shadow:4px 0 20px #0001;
+    }
+    #sidebar.mob-open{transform:translateX(0);}
+    #mob-overlay.show{display:block;}
+
+    /* 메인 전체 너비 */
+    #main{width:100%;}
+
+    /* 헤더 */
+    #chat-header{padding:10px 14px;}
+    #chat-title{font-size:14px;}
+
+    /* 채팅 */
+    #messages{padding:10px 12px;}
+    .tweet{padding:8px 4px;}
+    .avatar{width:34px;height:34px;}
+    .tweet-name{font-size:12px;}
+    .tweet-text{font-size:13px;}
+
+    /* 입력창 */
+    #input-area{padding:8px 10px 10px;}
+    #input-row{gap:6px;}
+    #char-select{max-width:76px;font-size:11px;padding:6px 6px;}
+    #msg-input{font-size:16px;padding:9px 10px;}
+    #btn-send{padding:9px 12px;font-size:12px;}
+    #btn-add-photo{padding:9px 10px;}
+    #btn-bulk-open{display:none;}
+
+    /* 캐릭터 시트 */
+    .sheet-hero{padding:14px 16px;}
+    .sheet-avatar{width:58px;height:58px;}
+    .sheet-name{font-size:17px;}
+    .sheet-body{padding:12px 14px 24px;}
+    .sheet-fields.cols-2{grid-template-columns:1fr;}
+
+    /* 토스트 */
+    #toast{bottom:20px;}
+
+    /* 모달 */
+    .modal{width:92vw;padding:20px;}
+  }
 </style>
 </head>
 <body>
 
 <div id="loading"><div class="spinner"></div><p style="font-size:13px;color:var(--text-muted)">불러오는 중...</p></div>
 <div id="toast"></div>
+<div id="mob-overlay"></div>
 
 <!-- 모달들 -->
 <div class="modal-overlay" id="modal-addMenu"><div class="modal"><h3>새 메뉴 추가</h3><input class="modal-input" id="input-menuName" placeholder="메뉴 이름"><div class="modal-actions"><button class="modal-cancel" id="btn-cancelAddMenu">취소</button><button class="modal-confirm" id="btn-confirmAddMenu">추가</button></div></div></div>
@@ -256,6 +313,9 @@
 <!-- MAIN -->
 <div id="main">
   <div id="chat-header">
+    <button id="mob-hamburger" aria-label="메뉴 열기">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     <span id="chat-title">방을 선택하세요</span>
   </div>
@@ -835,6 +895,30 @@ document.getElementById("btn-send").addEventListener("click",sendMsg);
 document.getElementById("msg-input").addEventListener("keydown",function(e){if(e.key==="Enter")sendMsg();});
 
 document.querySelectorAll(".modal-overlay").forEach(function(o){o.addEventListener("click",function(e){if(e.target===o)o.classList.remove("open");});});
+
+// ── 모바일 햄버거 ──
+function openSidebar(){
+  document.getElementById("sidebar").classList.add("mob-open");
+  document.getElementById("mob-overlay").classList.add("show");
+}
+function closeSidebar(){
+  document.getElementById("sidebar").classList.remove("mob-open");
+  document.getElementById("mob-overlay").classList.remove("show");
+}
+document.getElementById("mob-hamburger").addEventListener("click", openSidebar);
+document.getElementById("mob-overlay").addEventListener("click", closeSidebar);
+
+// 모바일에서 방/캐릭터 선택 시 사이드바 자동 닫기
+var _origOpenRoom = openRoom;
+openRoom = function(r){
+  _origOpenRoom(r);
+  if(window.innerWidth <= 640) closeSidebar();
+};
+var _origOpenCharSheet = openCharSheet;
+openCharSheet = function(name){
+  _origOpenCharSheet(name);
+  if(window.innerWidth <= 640) closeSidebar();
+};
 
 loadAll();
 </script>
