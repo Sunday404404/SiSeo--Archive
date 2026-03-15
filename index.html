@@ -9,71 +9,83 @@
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial;background:#f5f8fa;height:100vh;display:flex;overflow:hidden}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f5f8fa;height:100vh;display:flex}
 
-.sidebar{width:260px;background:white;border-right:1px solid #ddd;padding:16px;overflow-y:auto}
-.menu-title{font-weight:bold;margin:10px 0 6px 0}
-.menu-item{padding:6px 8px;border-radius:6px;cursor:pointer;margin-bottom:2px;display:flex;justify-content:space-between}
-.menu-item:hover{background:#eef2ff}
-.submenu{margin-left:12px;display:none}
-.menu-item.open + .submenu{display:block}
-.new-badge{background:red;color:white;font-size:10px;padding:2px 6px;border-radius:10px}
+.sidebar{width:260px;background:white;border-right:1px solid #e6ecf0;padding:14px;overflow-y:auto}
 
-.main{flex:1;display:flex;flex-direction:column;height:100%}
-.header{padding:14px 18px;border-bottom:1px solid #ddd;background:white;font-weight:bold;display:flex;justify-content:space-between}
+.menu-title{font-weight:bold;margin:14px 0 6px;color:#657786;display:flex;justify-content:space-between;align-items:center;cursor:grab}
 
-.search{border:1px solid #ccc;border-radius:8px;padding:4px 8px}
+.menu-item{padding:8px 10px;border-radius:18px;cursor:pointer;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center}
+.menu-item:hover{background:#e8f5fd}
 
-.messages{flex:1;overflow-y:auto;padding:20px}
-.message{display:flex;margin-bottom:16px}
-.avatar{width:42px;height:42px;border-radius:50%;margin-right:10px;object-fit:cover}
-.bubble{background:white;padding:10px 14px;border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,0.1);max-width:520px}
+.submenu{margin-left:10px}
+
+.edit-btn{font-size:11px;color:#8899a6;margin-left:6px;cursor:pointer}
+.delete-btn{font-size:11px;color:#ff3b30;margin-left:6px;cursor:pointer}
+
+.main{flex:1;display:flex;flex-direction:column;height:100vh}
+
+.header{background:white;border-bottom:1px solid #e6ecf0;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+
+.search{border:1px solid #ccd6dd;padding:6px 10px;border-radius:20px}
+
+.messages{flex:1;overflow-y:auto;background:white}
+
+.tweet{display:flex;padding:14px 16px;border-bottom:1px solid #e6ecf0}
+.avatar{width:48px;height:48px;border-radius:50%;margin-right:10px;object-fit:cover;cursor:pointer}
+.tweet-body{flex:1}
+
+.tweet-header{display:flex;align-items:center;font-size:14px}
 .name{font-weight:bold;margin-right:6px}
-.time{color:#777;font-size:12px}
-.text{margin-top:4px;line-height:1.4}
-.image{margin-top:6px;border-radius:10px;max-width:260px}
+.handle{color:#657786;margin-right:6px}
+.time{color:#657786;font-size:12px}
 
-.input-area{border-top:1px solid #ddd;background:white;padding:10px;display:flex;align-items:center}
-.character-picker{margin-right:8px;display:flex;align-items:center}
-.char{width:36px;height:36px;border-radius:50%;border:2px solid #ddd;margin-right:6px;cursor:pointer;object-fit:cover}
-.char.selected{border:2px solid red}
-.add-char{width:36px;height:36px;border-radius:50%;border:2px dashed #aaa;display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:bold}
+.tweet-text{margin-top:4px;line-height:1.4;white-space:pre-wrap}
+.tweet-img{margin-top:8px;max-width:420px;border-radius:14px}
 
-.chat-input{flex:1;border-radius:12px;border:1px solid #ccc;padding:8px 10px}
-.send{margin-left:8px;border:none;background:#1da1f2;color:white;padding:8px 14px;border-radius:10px;cursor:pointer}
+.actions{margin-top:6px;font-size:12px;color:#657786}
+.actions span{margin-right:12px;cursor:pointer}
+.actions span:hover{color:#1da1f2}
 
-.upload{margin-left:6px}
+.input-area{background:white;border-top:1px solid #e6ecf0;padding:10px;display:flex;flex-direction:column}
+
+.char-row{display:flex;margin-bottom:6px}
+.char{width:36px;height:36px;border-radius:50%;margin-right:6px;cursor:pointer;border:2px solid transparent;object-fit:cover}
+.char.selected{border:2px solid #1da1f2}
+.add-char{width:36px;height:36px;border-radius:50%;border:2px dashed #aaa;display:flex;align-items:center;justify-content:center;cursor:pointer}
+
+.input-row{display:flex;align-items:center}
+.chat-input{flex:1;border:1px solid #ccd6dd;border-radius:20px;padding:8px 12px}
+.send{margin-left:6px;border:none;background:#1da1f2;color:white;padding:8px 14px;border-radius:20px;cursor:pointer}
+
+.profile{
+position:fixed;
+right:0;
+top:0;
+width:320px;
+height:100%;
+background:white;
+border-left:1px solid #e6ecf0;
+padding:20px;
+display:none;
+flex-direction:column
+}
+
+.profile img{width:90px;height:90px;border-radius:50%;object-fit:cover;margin-bottom:10px}
+.profile-name{font-size:18px;font-weight:bold}
+.profile-handle{color:#657786;margin-bottom:20px}
 
 </style>
 </head>
 
 <body>
 
-<div class="sidebar">
-<div class="menu-title">설정</div>
-
-<div class="menu-title">역극</div>
-
-<div class="menu-item" onclick="toggleMenu(this)">성장 전</div>
-<div class="submenu">
-<div class="menu-item" onclick="openRoom('before_dorm')">기숙사 <span id="new-before_dorm" class="new-badge" style="display:none">NEW</span></div>
-<div class="menu-item" onclick="openRoom('before_school')">학교 <span id="new-before_school" class="new-badge" style="display:none">NEW</span></div>
-</div>
-
-<div class="menu-item" onclick="toggleMenu(this)">성장 후</div>
-<div class="submenu">
-<div class="menu-item" onclick="openRoom('after_work')">회사 <span id="new-after_work" class="new-badge" style="display:none">NEW</span></div>
-<div class="menu-item" onclick="openRoom('after_home')">집 <span id="new-after_home" class="new-badge" style="display:none">NEW</span></div>
-</div>
-
-<div class="menu-title">썰</div>
-<div class="menu-title">DM</div>
-</div>
+<div class="sidebar" id="sidebar"></div>
 
 <div class="main">
 
 <div class="header">
-<span id="roomTitle">기숙사</span>
+<span id="roomTitle">채팅</span>
 <input id="searchBox" class="search" placeholder="대화 검색" oninput="renderMessages()">
 </div>
 
@@ -81,16 +93,23 @@ body{margin:0;font-family:Arial;background:#f5f8fa;height:100vh;display:flex;ove
 
 <div class="input-area">
 
-<div class="character-picker" id="charPicker"></div>
+<div class="char-row" id="charPicker"></div>
 
-<input id="chatInput" class="chat-input" placeholder="메시지 입력">
-
-<input type="file" id="imageInput" class="upload" accept="image/*">
-
-<button class="send" onclick="sendMessage()">전송</button>
+<div class="input-row">
+<input id="chatInput" class="chat-input" placeholder="무슨 일이 일어나고 있나요?">
+<input type="file" id="imageInput">
+<button class="send" onclick="sendMessage()">Post</button>
+</div>
 
 </div>
 
+</div>
+
+<div class="profile" id="profile">
+<img id="profileImg">
+<div class="profile-name" id="profileName"></div>
+<div class="profile-handle" id="profileHandle"></div>
+<button onclick="closeProfile()">닫기</button>
 </div>
 
 <script>
@@ -108,34 +127,137 @@ appId:"1:450409807533:web:d7cc1869fab0043b24d024"
 firebase.initializeApp(firebaseConfig)
 const db=firebase.database()
 
-let currentRoom="before_dorm"
-let currentChar=null
-let characters=JSON.parse(localStorage.getItem('rp_characters')||'[]')
+let currentRoom=""
 let roomMessages=[]
+let currentChar=null
 
-function toggleMenu(el){el.classList.toggle("open")}
+let characters=JSON.parse(localStorage.getItem("rp_characters")||"[]")
+
+let menus=JSON.parse(localStorage.getItem("rp_menus")||`[
+{"name":"성장 전","rooms":["기숙사","학교"]},
+{"name":"성장 후","rooms":["회사","집"]}
+]`)
+
+function saveMenus(){localStorage.setItem("rp_menus",JSON.stringify(menus))}
+
+let dragIndex=null
+
+function renderMenus(){
+
+const box=document.getElementById("sidebar")
+box.innerHTML=""
+
+menus.forEach((m,i)=>{
+
+const title=document.createElement("div")
+title.className="menu-title"
+title.draggable=true
+
+title.ondragstart=()=>dragIndex=i
+
+title.ondragover=e=>e.preventDefault()
+
+title.ondrop=()=>{
+const item=menus.splice(dragIndex,1)[0]
+menus.splice(i,0,item)
+saveMenus()
+renderMenus()
+}
+
+title.innerHTML=`
+<span>${m.name}</span>
+<span>
+<span class="edit-btn" onclick="renameMenu(${i})">이름</span>
+<span class="edit-btn" onclick="addRoom(${i})">+방</span>
+<span class="delete-btn" onclick="deleteMenu(${i})">삭제</span>
+</span>`
+
+box.appendChild(title)
+
+const sub=document.createElement("div")
+sub.className="submenu"
+
+m.rooms.forEach((r,ri)=>{
+
+const room=document.createElement("div")
+room.className="menu-item"
+room.innerHTML=`
+<span onclick="openRoom('${m.name}_${r}')">${r}</span>
+<span>
+<span class="edit-btn" onclick="renameRoom(${i},${ri})">수정</span>
+<span class="delete-btn" onclick="deleteRoom(${i},${ri})">삭제</span>
+</span>`
+
+sub.appendChild(room)
+
+})
+
+box.appendChild(sub)
+
+})
+
+const add=document.createElement("button")
+add.innerText="+ 메뉴 추가"
+add.onclick=addMenu
+box.appendChild(add)
+
+}
+
+function addMenu(){
+const name=prompt("메뉴 이름")
+if(!name) return
+menus.push({name:name,rooms:[]})
+saveMenus()
+renderMenus()
+}
+
+function renameMenu(i){
+const n=prompt("새 메뉴 이름",menus[i].name)
+if(!n) return
+menus[i].name=n
+saveMenus()
+renderMenus()
+}
+
+function deleteMenu(i){
+if(!confirm("메뉴 삭제?")) return
+menus.splice(i,1)
+saveMenus()
+renderMenus()
+}
+
+function addRoom(i){
+const r=prompt("방 이름")
+if(!r) return
+menus[i].rooms.push(r)
+saveMenus()
+renderMenus()
+}
+
+function renameRoom(mi,ri){
+const n=prompt("새 방 이름",menus[mi].rooms[ri])
+if(!n) return
+menus[mi].rooms[ri]=n
+saveMenus()
+renderMenus()
+}
+
+function deleteRoom(mi,ri){
+if(!confirm("방 삭제?")) return
+menus[mi].rooms.splice(ri,1)
+saveMenus()
+renderMenus()
+}
 
 function openRoom(room){
 currentRoom=room
 roomMessages=[]
 document.getElementById("roomTitle").innerText=room
 listenMessages()
-hideNew(room)
-}
-
-function hideNew(room){
-const badge=document.getElementById("new-"+room)
-if(badge) badge.style.display="none"
-}
-
-function markNew(room){
-if(room===currentRoom) return
-const badge=document.getElementById("new-"+room)
-if(badge) badge.style.display="inline"
 }
 
 function saveCharacters(){
-localStorage.setItem('rp_characters',JSON.stringify(characters))
+localStorage.setItem("rp_characters",JSON.stringify(characters))
 }
 
 function renderCharacters(){
@@ -164,15 +286,14 @@ if(!name) return
 
 const input=document.createElement("input")
 input.type="file"
-input.accept="image/*"
 
 input.onchange=()=>{
 const file=input.files[0]
 const reader=new FileReader()
 reader.onload=e=>{
 characters.push({name,avatar:e.target.result})
+currentChar=name
 saveCharacters()
-if(!currentChar) currentChar=name
 renderCharacters()
 }
 reader.readAsDataURL(file)
@@ -181,36 +302,46 @@ reader.readAsDataURL(file)
 input.click()
 }
 
+function showProfile(name){
+const c=characters.find(x=>x.name===name)
+if(!c) return
+
+document.getElementById("profileImg").src=c.avatar
+
+document.getElementById("profileName").innerText=c.name
+
+document.getElementById("profileHandle").innerText="@"+c.name
+
+document.getElementById("profile").style.display="flex"
+}
+
+function closeProfile(){
+document.getElementById("profile").style.display="none"
+}
+
 function sendMessage(){
 
-const text=document.getElementById("chatInput").value.trim()
+const text=document.getElementById("chatInput").value
 const file=document.getElementById("imageInput").files[0]
 
-if(!currentChar) return
+if(!currentChar||!currentRoom) return
 
 if(file){
 const reader=new FileReader()
-reader.onload=e=>{
-pushMessage(text,e.target.result)
-}
+reader.onload=e=>pushMessage(text,e.target.result)
 reader.readAsDataURL(file)
-}else{
-pushMessage(text,null)
+}else pushMessage(text,null)
+
+chatInput.value=""
+imageInput.value=""
 }
 
-document.getElementById("chatInput").value=""
-document.getElementById("imageInput").value=""
-}
-
-function pushMessage(text,image){
-
-const msg={char:currentChar,text:text,image:image,time:Date.now()}
-
+function pushMessage(text,img){
+const msg={char:currentChar,text:text,image:img,time:Date.now()}
 db.ref("rooms/"+currentRoom).push(msg)
 }
 
 function listenMessages(){
-
 const box=document.getElementById("messages")
 box.innerHTML=""
 
@@ -219,14 +350,13 @@ ref.off()
 
 ref.on("child_added",snap=>{
 const m=snap.val()
+m.id=snap.key
 roomMessages.push(m)
 renderMessages()
 })
-
 }
 
 function renderMessages(){
-
 const box=document.getElementById("messages")
 box.innerHTML=""
 
@@ -236,36 +366,55 @@ roomMessages.forEach(m=>{
 
 if(search && !(m.text||"").toLowerCase().includes(search)) return
 
-const div=document.createElement("div")
-div.className="message"
-
 const char=characters.find(c=>c.name===m.char)
 const avatar=char?char.avatar:""
 
-const time=new Date(m.time).toLocaleTimeString()
+const d=new Date(m.time).toLocaleDateString()
 
 let imgHTML=""
-if(m.image) imgHTML=`<img class="image" src="${m.image}">`
+if(m.image) imgHTML=`<img class="tweet-img" src="${m.image}">`
 
+const div=document.createElement("div")
+div.className="tweet"
 
 div.innerHTML=`
-<img class="avatar" src="${avatar}">
-<div class="bubble">
-<div><span class="name">${m.char}</span><span class="time">${time}</span></div>
-<div class="text">${m.text||""}</div>
-${imgHTML}
+<img class="avatar" src="${avatar}" onclick="showProfile('${m.char}')">
+<div class="tweet-body">
+<div class="tweet-header">
+<span class="name">${m.char}</span>
+<span class="handle">@${m.char}</span>
+<span class="time">${d}</span>
 </div>
-`
+<div class="tweet-text">${m.text||""}</div>
+${imgHTML}
+<div class="actions">
+<span onclick="editMsg('${m.id}','${m.text||""}')">수정</span>
+<span onclick="deleteMsg('${m.id}')">삭제</span>
+</div>
+</div>`
 
 box.appendChild(div)
+
 })
-
-box.scrollTop=box.scrollHeight
-
 }
 
+function deleteMsg(id){
+if(!confirm("삭제할까요?")) return
+
+db.ref("rooms/"+currentRoom+"/"+id).remove()
+location.reload()
+}
+
+function editMsg(id,text){
+const t=prompt("수정",text)
+if(t===null) return
+
+db.ref("rooms/"+currentRoom+"/"+id).update({text:t})
+location.reload()
+}
+
+renderMenus()
 renderCharacters()
-listenMessages()()
 
 </script>
 
