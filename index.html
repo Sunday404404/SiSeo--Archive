@@ -19,109 +19,78 @@
     --text-muted: #a89e98;
     --bubble-bg: #eeeae6;
     --danger: #d94f4f;
-    --success: #4a9e6b;
     --section-label: #cdc8c2;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Noto Sans KR', sans-serif;
-    background: var(--bg); color: var(--text-primary);
-    display: flex; height: 100vh; overflow: hidden;
-  }
-  #sidebar {
-    width: 260px; min-width: 260px;
-    background: var(--sidebar-bg);
-    border-right: 1px solid var(--border);
-    display: flex; flex-direction: column; overflow: hidden;
-  }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text-primary); display: flex; height: 100vh; overflow: hidden; }
+
+  /* ── SIDEBAR ── */
+  #sidebar { width: 260px; min-width: 260px; background: var(--sidebar-bg); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
   #sidebar-header { padding: 16px 16px 12px; border-bottom: 1px solid var(--border); }
-  #sidebar-logo {
-    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px;
-    color: var(--text-primary); display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
-  }
-  .logo-icon {
-    width: 24px; height: 24px; background: var(--accent-soft); border-radius: 6px;
-    display: flex; align-items: center; justify-content: center; font-size: 12px; color: white;
-  }
-  #search-box {
-    width: 100%; background: var(--bg); border: 1px solid var(--border);
-    border-radius: 8px; padding: 7px 10px; color: var(--text-primary);
-    font-size: 12px; font-family: 'Noto Sans KR', sans-serif; outline: none; transition: border-color .2s;
-  }
+  #sidebar-logo { font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px; color: var(--text-primary); display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .logo-icon { width: 24px; height: 24px; background: var(--accent-soft); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; }
+  #search-box { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px; color: var(--text-primary); font-size: 12px; font-family: 'Noto Sans KR', sans-serif; outline: none; transition: border-color .2s; }
   #search-box:focus { border-color: var(--accent-soft); }
   #search-box::placeholder { color: var(--text-muted); }
   #sidebar-nav { flex: 1; overflow-y: auto; padding: 8px 8px 0; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
-  .section-label {
-    font-size: 10px; font-weight: 600; letter-spacing: .08em; color: var(--text-muted);
-    padding: 12px 10px 4px; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between;
-  }
-  .section-add-btn {
-    background: none; border: none; color: var(--text-muted); cursor: pointer;
-    padding: 2px 6px; border-radius: 4px; font-size: 16px; line-height: 1; transition: color .15s, background .15s;
-  }
+
+  .section-label { font-size: 10px; font-weight: 600; letter-spacing: .08em; color: var(--text-muted); padding: 12px 10px 4px; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between; }
+  .section-add-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 2px 6px; border-radius: 4px; font-size: 16px; line-height: 1; transition: color .15s, background .15s; }
   .section-add-btn:hover { color: var(--text-primary); background: var(--sidebar-hover); }
-  .menu-group { margin-bottom: 4px; }
-  .menu-group-header {
-    display: flex; align-items: center; padding: 6px 10px; border-radius: 8px;
-    cursor: pointer; gap: 6px; transition: background .15s; user-select: none;
-  }
+
+  /* 1단계: 대메뉴 */
+  .menu-group { margin-bottom: 2px; }
+  .menu-group-header { display: flex; align-items: center; padding: 6px 10px; border-radius: 8px; cursor: pointer; gap: 6px; transition: background .15s; user-select: none; }
   .menu-group-header:hover { background: var(--sidebar-hover); }
-  .menu-group-header:hover .menu-group-actions { opacity: 1; }
+  .menu-group-header:hover .row-actions { opacity: 1; }
   .menu-group-chevron { color: var(--text-muted); font-size: 10px; transition: transform .2s; flex-shrink: 0; }
   .menu-group-chevron.open { transform: rotate(90deg); }
-  .menu-group-name { font-size: 13px; font-weight: 500; color: var(--text-secondary); flex: 1; }
-  .menu-group-actions { display: flex; gap: 2px; opacity: 0; transition: opacity .15s; }
-  .icon-btn {
-    background: none; border: none; cursor: pointer; color: var(--text-muted);
-    padding: 3px; border-radius: 4px; display: flex; align-items: center; transition: color .15s, background .15s;
-  }
-  .icon-btn:hover { color: var(--text-primary); background: var(--section-label); }
-  .icon-btn.danger:hover { color: var(--danger); }
-  .menu-group-rooms { overflow: hidden; max-height: 0; transition: max-height .25s ease; }
-  .menu-group-rooms.open { max-height: 600px; }
-  .room-item {
-    display: flex; align-items: center; padding: 6px 10px 6px 28px; border-radius: 8px;
-    cursor: pointer; font-size: 12px; color: var(--text-secondary);
-    transition: background .15s, color .15s; gap: 6px; user-select: none;
-  }
+  .menu-group-name { font-size: 13px; font-weight: 600; color: var(--text-secondary); flex: 1; }
+
+  .menu-group-children { overflow: hidden; max-height: 0; transition: max-height .25s ease; }
+  .menu-group-children.open { max-height: 1000px; }
+
+  /* 2단계: 서브메뉴 */
+  .sub-group { margin-bottom: 1px; }
+  .sub-group-header { display: flex; align-items: center; padding: 5px 10px 5px 22px; border-radius: 8px; cursor: pointer; gap: 6px; transition: background .15s; user-select: none; }
+  .sub-group-header:hover { background: var(--sidebar-hover); }
+  .sub-group-header:hover .row-actions { opacity: 1; }
+  .sub-group-chevron { color: var(--text-muted); font-size: 9px; transition: transform .2s; flex-shrink: 0; }
+  .sub-group-chevron.open { transform: rotate(90deg); }
+  .sub-group-name { font-size: 12px; font-weight: 500; color: var(--text-secondary); flex: 1; }
+
+  .sub-group-rooms { overflow: hidden; max-height: 0; transition: max-height .25s ease; }
+  .sub-group-rooms.open { max-height: 600px; }
+
+  /* 3단계: 방 */
+  .room-item { display: flex; align-items: center; padding: 5px 10px 5px 38px; border-radius: 8px; cursor: pointer; font-size: 12px; color: var(--text-secondary); transition: background .15s, color .15s; gap: 6px; user-select: none; }
   .room-item:hover { background: var(--sidebar-hover); color: var(--text-primary); }
   .room-item.active { background: var(--sidebar-active); color: var(--accent); }
-  .room-item:hover .room-actions { opacity: 1; }
-  .room-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0; }
+  .room-item:hover .row-actions { opacity: 1; }
+  .room-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0; }
   .room-item.active .room-dot { background: var(--accent); }
   .room-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .room-actions { display: flex; gap: 2px; opacity: 0; transition: opacity .15s; }
+
+  /* 공통 액션 버튼 */
+  .row-actions { display: flex; gap: 2px; opacity: 0; transition: opacity .15s; }
+  .icon-btn { background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 3px; border-radius: 4px; display: flex; align-items: center; transition: color .15s, background .15s; }
+  .icon-btn:hover { color: var(--text-primary); background: var(--section-label); }
+  .icon-btn.danger:hover { color: var(--danger); }
+
   #sidebar-footer { border-top: 1px solid var(--border); padding: 12px; }
-  #btn-add-char {
-    width: 100%; background: var(--sidebar-hover); border: 1px solid var(--border);
-    border-radius: 8px; color: var(--text-secondary); padding: 8px; font-size: 12px;
-    font-family: 'Noto Sans KR', sans-serif; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-    transition: background .15s, color .15s, border-color .15s;
-  }
+  #btn-add-char { width: 100%; background: var(--sidebar-hover); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); padding: 8px; font-size: 12px; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background .15s, color .15s, border-color .15s; }
   #btn-add-char:hover { background: var(--section-label); color: var(--text-primary); border-color: var(--accent-soft); }
+
+  /* ── MAIN ── */
   #main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-  #chat-header {
-    padding: 14px 20px; border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 10px; background: var(--bg);
-  }
+  #chat-header { padding: 14px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; background: var(--bg); }
   #chat-title { font-size: 15px; font-weight: 600; color: var(--text-muted); }
-  #messages {
-    flex: 1; overflow-y: auto; padding: 20px;
-    display: flex; flex-direction: column; gap: 4px;
-    scrollbar-width: thin; scrollbar-color: var(--border) transparent;
-  }
-  #no-room {
-    flex: 1; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; color: var(--text-muted); gap: 8px; font-size: 13px;
-  }
+  #messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 4px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  #no-room { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); gap: 8px; font-size: 13px; }
   .tweet { display: flex; gap: 12px; padding: 10px 12px; border-radius: 10px; transition: background .15s; }
   .tweet:hover { background: var(--bubble-bg); }
   .tweet:hover .msg-actions { opacity: 1; }
-  .avatar {
-    width: 42px; height: 42px; border-radius: 50%; object-fit: cover;
-    cursor: pointer; flex-shrink: 0; border: 2px solid var(--border); transition: border-color .15s;
-  }
+  .avatar { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; cursor: pointer; flex-shrink: 0; border: 2px solid var(--border); transition: border-color .15s; }
   .avatar:hover { border-color: var(--accent); }
   .tweet-body { flex: 1; min-width: 0; }
   .tweet-meta { display: flex; align-items: baseline; gap: 6px; margin-bottom: 3px; }
@@ -130,210 +99,149 @@
   .tweet-date { font-size: 11px; color: var(--text-muted); margin-left: auto; }
   .tweet-text { font-size: 13px; line-height: 1.6; color: var(--text-primary); white-space: pre-line; word-break: break-word; }
   .msg-actions { display: flex; gap: 4px; margin-top: 6px; opacity: 0; transition: opacity .15s; }
-  .msg-btn {
-    background: var(--sidebar-hover); border: 1px solid var(--border);
-    border-radius: 6px; color: var(--text-muted); padding: 3px 8px; font-size: 11px; cursor: pointer;
-    font-family: 'Noto Sans KR', sans-serif; transition: all .15s;
-  }
+  .msg-btn { background: var(--sidebar-hover); border: 1px solid var(--border); border-radius: 6px; color: var(--text-muted); padding: 3px 8px; font-size: 11px; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; transition: all .15s; }
   .msg-btn:hover { color: var(--text-primary); border-color: var(--text-muted); }
   .msg-btn.danger:hover { color: var(--danger); border-color: var(--danger); }
-  #input-area {
-    border-top: 1px solid var(--border); padding: 12px 16px;
-    display: none; gap: 8px; align-items: center; background: var(--sidebar-bg);
-  }
-  #char-select {
-    background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
-    color: var(--text-primary); padding: 8px 10px; font-size: 12px;
-    font-family: 'Noto Sans KR', sans-serif; outline: none; cursor: pointer;
-  }
-  #msg-input {
-    flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
-    color: var(--text-primary); padding: 8px 12px; font-size: 13px;
-    font-family: 'Noto Sans KR', sans-serif; outline: none; transition: border-color .2s;
-  }
+  #input-area { border-top: 1px solid var(--border); padding: 12px 16px; display: none; gap: 8px; align-items: center; background: var(--sidebar-bg); }
+  #char-select { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); padding: 8px 10px; font-size: 12px; font-family: 'Noto Sans KR', sans-serif; outline: none; cursor: pointer; }
+  #msg-input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); padding: 8px 12px; font-size: 13px; font-family: 'Noto Sans KR', sans-serif; outline: none; transition: border-color .2s; }
   #msg-input:focus { border-color: var(--accent-soft); }
   #msg-input::placeholder { color: var(--text-muted); }
-  #btn-send {
-    background: var(--accent-soft); border: none; border-radius: 8px; color: white;
-    padding: 8px 14px; font-size: 12px; font-weight: 500;
-    font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: background .15s;
-  }
+  #btn-send { background: var(--accent-soft); border: none; border-radius: 8px; color: white; padding: 8px 14px; font-size: 12px; font-weight: 500; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: background .15s; }
   #btn-send:hover { background: var(--accent); }
-  #btn-bulk-open {
-    background: var(--sidebar-hover); border: 1px solid var(--border); border-radius: 8px;
-    color: var(--text-secondary); padding: 8px 12px; font-size: 12px;
-    font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: all .15s;
-  }
+  #btn-bulk-open { background: var(--sidebar-hover); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); padding: 8px 12px; font-size: 12px; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: all .15s; }
   #btn-bulk-open:hover { border-color: var(--accent-soft); color: var(--text-primary); }
-  #profile-panel {
-    width: 280px; min-width: 280px; background: var(--sidebar-bg);
-    border-left: 1px solid var(--border); display: none; flex-direction: column; overflow-y: auto;
-  }
+
+  /* ── PROFILE ── */
+  #profile-panel { width: 280px; min-width: 280px; background: var(--sidebar-bg); border-left: 1px solid var(--border); display: none; flex-direction: column; overflow-y: auto; }
   #profile-panel.open { display: flex; }
-  .profile-header {
-    padding: 16px; border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-  }
+  .profile-header { padding: 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
   .profile-header h3 { font-size: 14px; font-weight: 600; }
-  #btn-close-profile {
-    background: none; border: none; color: var(--text-muted); cursor: pointer;
-    padding: 4px; border-radius: 6px; font-size: 16px; transition: color .15s;
-  }
+  #btn-close-profile { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 4px; border-radius: 6px; font-size: 16px; transition: color .15s; }
   #btn-close-profile:hover { color: var(--text-primary); }
   .profile-body { padding: 16px; }
   .profile-avatar { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); margin-bottom: 12px; }
   .profile-name { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
   .profile-id-text { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
   .profile-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; margin-top: 12px; }
-  .profile-textarea {
-    width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
-    color: var(--text-primary); padding: 8px 10px; font-size: 12px;
-    font-family: 'Noto Sans KR', sans-serif; resize: vertical; min-height: 70px; outline: none; transition: border-color .2s;
-  }
+  .profile-textarea { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); padding: 8px 10px; font-size: 12px; font-family: 'Noto Sans KR', sans-serif; resize: vertical; min-height: 70px; outline: none; transition: border-color .2s; }
   .profile-textarea:focus { border-color: var(--accent-soft); }
-  #btn-save-profile {
-    width: 100%; margin-top: 12px; background: var(--accent-soft); border: none;
-    border-radius: 8px; color: white; padding: 9px; font-size: 13px;
-    font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: background .15s;
-  }
+  #btn-save-profile { width: 100%; margin-top: 12px; background: var(--accent-soft); border: none; border-radius: 8px; color: white; padding: 9px; font-size: 13px; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: background .15s; }
   #btn-save-profile:hover { background: var(--accent); }
-  #btn-delete-char {
-    width: 100%; margin-top: 6px; background: none; border: 1px solid var(--border);
-    border-radius: 8px; color: var(--danger); padding: 9px; font-size: 13px;
-    font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: all .15s;
-  }
+  #btn-delete-char { width: 100%; margin-top: 6px; background: none; border: 1px solid var(--border); border-radius: 8px; color: var(--danger); padding: 9px; font-size: 13px; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: all .15s; }
   #btn-delete-char:hover { background: #d94f4f10; border-color: var(--danger); }
-  .modal-overlay {
-    position: fixed; inset: 0; background: #0005;
-    align-items: center; justify-content: center; z-index: 100; display: none;
-  }
+
+  /* ── MODAL ── */
+  .modal-overlay { position: fixed; inset: 0; background: #0005; align-items: center; justify-content: center; z-index: 100; display: none; }
   .modal-overlay.open { display: flex; }
   .modal { background: var(--sidebar-bg); border: 1px solid var(--border); border-radius: 12px; padding: 24px; width: 360px; max-width: 90vw; }
   .modal h3 { font-size: 15px; font-weight: 600; margin-bottom: 16px; }
-  .modal-input {
-    width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
-    color: var(--text-primary); padding: 9px 12px; font-size: 13px;
-    font-family: 'Noto Sans KR', sans-serif; outline: none; margin-bottom: 10px; transition: border-color .2s;
-  }
+  .modal-input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); padding: 9px 12px; font-size: 13px; font-family: 'Noto Sans KR', sans-serif; outline: none; margin-bottom: 10px; transition: border-color .2s; }
   .modal-input:focus { border-color: var(--accent-soft); }
-  .modal-textarea {
-    width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
-    color: var(--text-primary); padding: 9px 12px; font-size: 13px;
-    font-family: 'Noto Sans KR', sans-serif; outline: none; resize: vertical; min-height: 120px;
-    margin-bottom: 10px; transition: border-color .2s;
-  }
+  .modal-textarea { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); padding: 9px 12px; font-size: 13px; font-family: 'Noto Sans KR', sans-serif; outline: none; resize: vertical; min-height: 120px; margin-bottom: 10px; transition: border-color .2s; }
   .modal-textarea:focus { border-color: var(--accent-soft); }
   .modal-actions { display: flex; gap: 8px; margin-top: 4px; }
-  .modal-confirm {
-    flex: 1; background: var(--accent-soft); border: none; border-radius: 8px; color: white;
-    padding: 9px; font-size: 13px; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: background .15s;
-  }
+  .modal-confirm { flex: 1; background: var(--accent-soft); border: none; border-radius: 8px; color: white; padding: 9px; font-size: 13px; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: background .15s; }
   .modal-confirm:hover { background: var(--accent); }
-  .modal-cancel {
-    flex: 1; background: var(--sidebar-hover); border: 1px solid var(--border); border-radius: 8px;
-    color: var(--text-secondary); padding: 9px; font-size: 13px;
-    font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: color .15s;
-  }
+  .modal-cancel { flex: 1; background: var(--sidebar-hover); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); padding: 9px; font-size: 13px; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; }
   .modal-cancel:hover { color: var(--text-primary); }
   #avatar-preview { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); margin-bottom: 10px; display: none; }
   #avatar-preview.show { display: block; }
-  .file-label {
-    display: block; background: var(--sidebar-hover); border: 1px dashed var(--border);
-    border-radius: 8px; color: var(--text-muted); padding: 10px; font-size: 12px;
-    text-align: center; cursor: pointer; margin-bottom: 10px; transition: all .15s;
-  }
+  .file-label { display: block; background: var(--sidebar-hover); border: 1px dashed var(--border); border-radius: 8px; color: var(--text-muted); padding: 10px; font-size: 12px; text-align: center; cursor: pointer; margin-bottom: 10px; transition: all .15s; }
   .file-label:hover { border-color: var(--accent-soft); color: var(--text-primary); }
-  #toast {
-    position: fixed; bottom: 24px; left: 50%;
-    transform: translateX(-50%) translateY(60px);
-    background: var(--text-primary); color: var(--bg);
-    border-radius: 8px; padding: 10px 18px; font-size: 13px;
-    z-index: 200; transition: transform .3s; pointer-events: none;
-  }
+
+  /* ── TOAST / LOADING ── */
+  #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(60px); background: var(--text-primary); color: var(--bg); border-radius: 8px; padding: 10px 18px; font-size: 13px; z-index: 200; transition: transform .3s; pointer-events: none; }
   #toast.show { transform: translateX(-50%) translateY(0); }
-  #loading {
-    position: fixed; inset: 0; background: var(--bg);
-    display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px; z-index: 300;
-  }
+  #loading { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px; z-index: 300; }
   .spinner { width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
 
-<div id="loading">
-  <div class="spinner"></div>
-  <p style="font-size:13px;color:var(--text-muted)">불러오는 중...</p>
-</div>
-
+<div id="loading"><div class="spinner"></div><p style="font-size:13px;color:var(--text-muted)">불러오는 중...</p></div>
 <div id="toast"></div>
 
-<div class="modal-overlay" id="modal-addMenu">
-  <div class="modal">
-    <h3>새 메뉴 추가</h3>
-    <input class="modal-input" id="input-menuName" placeholder="메뉴 이름">
-    <div class="modal-actions">
-      <button class="modal-cancel" id="btn-cancelAddMenu">취소</button>
-      <button class="modal-confirm" id="btn-confirmAddMenu">추가</button>
-    </div>
+<!-- 대메뉴 추가 -->
+<div class="modal-overlay" id="modal-addMenu"><div class="modal">
+  <h3>새 메뉴 추가</h3>
+  <input class="modal-input" id="input-menuName" placeholder="메뉴 이름">
+  <div class="modal-actions">
+    <button class="modal-cancel" id="btn-cancelAddMenu">취소</button>
+    <button class="modal-confirm" id="btn-confirmAddMenu">추가</button>
   </div>
-</div>
+</div></div>
 
-<div class="modal-overlay" id="modal-editMenu">
-  <div class="modal">
-    <h3>메뉴 이름 수정</h3>
-    <input class="modal-input" id="input-editMenuName" placeholder="새 이름">
-    <div class="modal-actions">
-      <button class="modal-cancel" id="btn-cancelEditMenu">취소</button>
-      <button class="modal-confirm" id="btn-confirmEditMenu">저장</button>
-    </div>
+<!-- 대메뉴 수정 -->
+<div class="modal-overlay" id="modal-editMenu"><div class="modal">
+  <h3>메뉴 이름 수정</h3>
+  <input class="modal-input" id="input-editMenuName" placeholder="새 이름">
+  <div class="modal-actions">
+    <button class="modal-cancel" id="btn-cancelEditMenu">취소</button>
+    <button class="modal-confirm" id="btn-confirmEditMenu">저장</button>
   </div>
-</div>
+</div></div>
 
-<div class="modal-overlay" id="modal-addRoom">
-  <div class="modal">
-    <h3>새 방 추가</h3>
-    <input class="modal-input" id="input-roomName" placeholder="방 이름">
-    <div class="modal-actions">
-      <button class="modal-cancel" id="btn-cancelAddRoom">취소</button>
-      <button class="modal-confirm" id="btn-confirmAddRoom">추가</button>
-    </div>
+<!-- 서브메뉴 추가 -->
+<div class="modal-overlay" id="modal-addSub"><div class="modal">
+  <h3>서브메뉴 추가</h3>
+  <input class="modal-input" id="input-subName" placeholder="서브메뉴 이름">
+  <div class="modal-actions">
+    <button class="modal-cancel" id="btn-cancelAddSub">취소</button>
+    <button class="modal-confirm" id="btn-confirmAddSub">추가</button>
   </div>
-</div>
+</div></div>
 
-<div class="modal-overlay" id="modal-addChar">
-  <div class="modal">
-    <h3>캐릭터 추가</h3>
-    <img id="avatar-preview" alt="preview">
-    <label class="file-label" for="avatar-file">📁 아바타 이미지 선택</label>
-    <input type="file" id="avatar-file" accept="image/*" style="display:none">
-    <input class="modal-input" id="input-charName" placeholder="캐릭터 이름">
-    <input class="modal-input" id="input-charId" placeholder="@아이디">
-    <div class="modal-actions">
-      <button class="modal-cancel" id="btn-cancelAddChar">취소</button>
-      <button class="modal-confirm" id="btn-confirmAddChar">추가</button>
-    </div>
+<!-- 서브메뉴 수정 -->
+<div class="modal-overlay" id="modal-editSub"><div class="modal">
+  <h3>서브메뉴 이름 수정</h3>
+  <input class="modal-input" id="input-editSubName" placeholder="새 이름">
+  <div class="modal-actions">
+    <button class="modal-cancel" id="btn-cancelEditSub">취소</button>
+    <button class="modal-confirm" id="btn-confirmEditSub">저장</button>
   </div>
-</div>
+</div></div>
 
-<div class="modal-overlay" id="modal-bulk">
-  <div class="modal">
-    <h3>대화 일괄 업로드</h3>
-    <p style="font-size:12px;color:var(--text-muted);margin-bottom:10px">형식: 이름 / @아이디 / 날짜 / 내용 (빈 줄로 구분)</p>
-    <textarea class="modal-textarea" id="input-bulk" placeholder="캐릭터이름&#10;@아이디&#10;1월 1일&#10;대화 내용&#10;&#10;캐릭터이름2&#10;..."></textarea>
-    <div class="modal-actions">
-      <button class="modal-cancel" id="btn-cancelBulk">취소</button>
-      <button class="modal-confirm" id="btn-confirmBulk">업로드</button>
-    </div>
+<!-- 방 추가 -->
+<div class="modal-overlay" id="modal-addRoom"><div class="modal">
+  <h3>새 방 추가</h3>
+  <input class="modal-input" id="input-roomName" placeholder="방 이름">
+  <div class="modal-actions">
+    <button class="modal-cancel" id="btn-cancelAddRoom">취소</button>
+    <button class="modal-confirm" id="btn-confirmAddRoom">추가</button>
   </div>
-</div>
+</div></div>
 
+<!-- 캐릭터 추가 -->
+<div class="modal-overlay" id="modal-addChar"><div class="modal">
+  <h3>캐릭터 추가</h3>
+  <img id="avatar-preview" alt="preview">
+  <label class="file-label" for="avatar-file">📁 아바타 이미지 선택</label>
+  <input type="file" id="avatar-file" accept="image/*" style="display:none">
+  <input class="modal-input" id="input-charName" placeholder="캐릭터 이름">
+  <input class="modal-input" id="input-charId" placeholder="@아이디">
+  <div class="modal-actions">
+    <button class="modal-cancel" id="btn-cancelAddChar">취소</button>
+    <button class="modal-confirm" id="btn-confirmAddChar">추가</button>
+  </div>
+</div></div>
+
+<!-- 대화 업로드 -->
+<div class="modal-overlay" id="modal-bulk"><div class="modal">
+  <h3>대화 일괄 업로드</h3>
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:10px">형식: 이름 / @아이디 / 날짜 / 내용 (빈 줄로 구분)</p>
+  <textarea class="modal-textarea" id="input-bulk" placeholder="캐릭터이름&#10;@아이디&#10;1월 1일&#10;대화 내용&#10;&#10;캐릭터이름2&#10;..."></textarea>
+  <div class="modal-actions">
+    <button class="modal-cancel" id="btn-cancelBulk">취소</button>
+    <button class="modal-confirm" id="btn-confirmBulk">업로드</button>
+  </div>
+</div></div>
+
+<!-- SIDEBAR -->
 <div id="sidebar">
   <div id="sidebar-header">
-    <div id="sidebar-logo">
-      <span class="logo-icon">✦</span>
-      시현서현
-    </div>
+    <div id="sidebar-logo"><span class="logo-icon">✦</span>시현서현</div>
     <input id="search-box" type="text" placeholder="검색...">
   </div>
   <div id="sidebar-nav">
@@ -345,26 +253,21 @@
   </div>
   <div id="sidebar-footer">
     <button id="btn-add-char">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-      </svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
       캐릭터 추가
     </button>
   </div>
 </div>
 
+<!-- MAIN -->
 <div id="main">
   <div id="chat-header">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-    </svg>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     <span id="chat-title">방을 선택하세요</span>
   </div>
   <div id="messages">
     <div id="no-room">
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-      </svg>
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       <p>왼쪽에서 방을 선택하세요</p>
     </div>
   </div>
@@ -376,11 +279,9 @@
   </div>
 </div>
 
+<!-- PROFILE -->
 <div id="profile-panel">
-  <div class="profile-header">
-    <h3>캐릭터 정보</h3>
-    <button id="btn-close-profile">✕</button>
-  </div>
+  <div class="profile-header"><h3>캐릭터 정보</h3><button id="btn-close-profile">✕</button></div>
   <div class="profile-body" id="profile-body"></div>
 </div>
 
@@ -396,50 +297,76 @@ const firebaseConfig = {
   projectId: "siseo-archive",
   storageBucket: "siseo-archive.firebasestorage.app",
   messagingSenderId: "450409807533",
-  appId: "1:450409807533:web:d7cc1869fab0043b24d024",
-  measurementId: "G-L2T7HJK7BG"
+  appId: "1:450409807533:web:d7cc1869fab0043b24d024"
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
+// ── 상태 ──
+// 데이터 구조: menus = [ { name, subs: [ { name, rooms: ["방이름",...] } ] } ]
 let menus = [];
 let chars = [];
 let currentRoom = null;
-let editingMenuIdx = null;
-let pendingMenuIdx = null;
 let currentProfileChar = null;
 let prevRoomRef = null;
 
+// 모달 컨텍스트
+let editingMenuIdx = null;
+let pendingMenuIdx = null;   // 서브메뉴 추가 대상 대메뉴
+let editingSubCtx = null;    // { mi, si }
+let pendingSubCtx = null;    // { mi, si } 방 추가 대상
+
+// ── 유틸 ──
 function toast(msg) {
   const t = document.getElementById("toast");
   t.textContent = msg;
   t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 2500);
+  setTimeout(function() { t.classList.remove("show"); }, 2500);
 }
 function openModal(id) { document.getElementById(id).classList.add("open"); }
 function closeModal(id) { document.getElementById(id).classList.remove("open"); }
 function roomKey(r) { return r.replace(/[.#$\/\[\]]/g, "_"); }
 
+function svgEdit() {
+  return '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
+}
+function svgDelete() {
+  return '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>';
+}
+function svgPlus() {
+  return '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+}
+
+// ── Firebase ──
 async function saveMenus() {
   const obj = {};
-  menus.forEach((m, i) => obj[i] = m);
+  menus.forEach(function(m, i) { obj[i] = m; });
   await set(ref(db, "menus"), obj);
 }
 async function saveChars() {
   const obj = {};
-  chars.forEach((c, i) => obj[i] = c);
+  chars.forEach(function(c, i) { obj[i] = c; });
   await set(ref(db, "chars"), obj);
 }
 
 async function loadAll() {
   try {
-    const [menuSnap, charSnap] = await Promise.all([
-      get(ref(db, "menus")),
-      get(ref(db, "chars"))
-    ]);
-    menus = menuSnap.exists() ? Object.values(menuSnap.val()) : [];
-    chars = charSnap.exists() ? Object.values(charSnap.val()) : [];
+    const ms = await get(ref(db, "menus"));
+    const cs = await get(ref(db, "chars"));
+    // 기존 데이터 마이그레이션: rooms 배열이 있으면 subs로 감쌈
+    if (ms.exists()) {
+      const raw = Object.values(ms.val());
+      menus = raw.map(function(m) {
+        if (!m.subs) {
+          // 구버전: rooms 배열 → subs[0].rooms 로 변환
+          return { name: m.name, subs: [{ name: "기본", rooms: m.rooms || [] }] };
+        }
+        return m;
+      });
+    } else {
+      menus = [];
+    }
+    chars = cs.exists() ? Object.values(cs.val()) : [];
   } catch(e) {
     toast("Firebase 연결 오류: " + e.message);
   }
@@ -448,10 +375,14 @@ async function loadAll() {
   document.getElementById("loading").style.display = "none";
 }
 
-function renderMenus(filter = "") {
+// ── 렌더링 ──
+function renderMenus(filter) {
+  filter = filter || "";
   const box = document.getElementById("menu-list");
   box.innerHTML = "";
-  menus.forEach((m, mi) => {
+
+  menus.forEach(function(m, mi) {
+    // 대메뉴
     const group = document.createElement("div");
     group.className = "menu-group";
 
@@ -460,88 +391,143 @@ function renderMenus(filter = "") {
     header.innerHTML =
       '<span class="menu-group-chevron open">&#9654;</span>' +
       '<span class="menu-group-name">' + m.name + '</span>' +
-      '<div class="menu-group-actions">' +
-        '<button class="icon-btn" data-action="edit-menu" data-mi="' + mi + '" title="수정">' +
-          '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>' +
-        '</button>' +
-        '<button class="icon-btn danger" data-action="delete-menu" data-mi="' + mi + '" title="삭제">' +
-          '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>' +
-        '</button>' +
-        '<button class="icon-btn" data-action="add-room" data-mi="' + mi + '" title="방 추가">' +
-          '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
-        '</button>' +
+      '<div class="row-actions">' +
+        '<button class="icon-btn" data-a="edit-menu" data-mi="' + mi + '" title="수정">' + svgEdit() + '</button>' +
+        '<button class="icon-btn danger" data-a="del-menu" data-mi="' + mi + '" title="삭제">' + svgDelete() + '</button>' +
+        '<button class="icon-btn" data-a="add-sub" data-mi="' + mi + '" title="서브메뉴 추가">' + svgPlus() + '</button>' +
       '</div>';
 
     const chevron = header.querySelector(".menu-group-chevron");
-    const roomsDiv = document.createElement("div");
-    roomsDiv.className = "menu-group-rooms open";
+    const children = document.createElement("div");
+    children.className = "menu-group-children open";
 
     header.addEventListener("click", function(e) {
-      const btn = e.target.closest("[data-action]");
+      const btn = e.target.closest("[data-a]");
       if (btn) {
         e.stopPropagation();
-        const action = btn.dataset.action;
-        const idx = parseInt(btn.dataset.mi);
-        if (action === "edit-menu") {
+        const a = btn.dataset.a, idx = parseInt(btn.dataset.mi);
+        if (a === "edit-menu") {
           editingMenuIdx = idx;
           document.getElementById("input-editMenuName").value = menus[idx].name;
           openModal("modal-editMenu");
-        } else if (action === "delete-menu") {
-          handleDeleteMenu(idx);
-        } else if (action === "add-room") {
+        } else if (a === "del-menu") {
+          doDeleteMenu(idx);
+        } else if (a === "add-sub") {
           pendingMenuIdx = idx;
-          document.getElementById("input-roomName").value = "";
-          openModal("modal-addRoom");
+          document.getElementById("input-subName").value = "";
+          openModal("modal-addSub");
         }
         return;
       }
-      const isOpen = roomsDiv.classList.toggle("open");
+      var isOpen = children.classList.toggle("open");
       chevron.classList.toggle("open", isOpen);
     });
 
-    const rooms = m.rooms || [];
-    rooms.forEach(function(r, ri) {
-      if (filter && r.toLowerCase().indexOf(filter.toLowerCase()) === -1) return;
-      const item = document.createElement("div");
-      item.className = "room-item" + (currentRoom === r ? " active" : "");
-      item.innerHTML =
-        '<span class="room-dot"></span>' +
-        '<span class="room-name">' + r + '</span>' +
-        '<div class="room-actions">' +
-          '<button class="icon-btn danger" data-action="delete-room" title="삭제">' +
-            '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>' +
-          '</button>' +
+    // 서브메뉴
+    var subs = m.subs || [];
+    subs.forEach(function(s, si) {
+      var subGroup = document.createElement("div");
+      subGroup.className = "sub-group";
+
+      var subHeader = document.createElement("div");
+      subHeader.className = "sub-group-header";
+      subHeader.innerHTML =
+        '<span class="sub-group-chevron open">&#9654;</span>' +
+        '<span class="sub-group-name">' + s.name + '</span>' +
+        '<div class="row-actions">' +
+          '<button class="icon-btn" data-a="edit-sub" data-mi="' + mi + '" data-si="' + si + '" title="수정">' + svgEdit() + '</button>' +
+          '<button class="icon-btn danger" data-a="del-sub" data-mi="' + mi + '" data-si="' + si + '" title="삭제">' + svgDelete() + '</button>' +
+          '<button class="icon-btn" data-a="add-room" data-mi="' + mi + '" data-si="' + si + '" title="방 추가">' + svgPlus() + '</button>' +
         '</div>';
-      item.addEventListener("click", function(e) {
-        if (e.target.closest("[data-action]")) {
+
+      var subChevron = subHeader.querySelector(".sub-group-chevron");
+      var roomsDiv = document.createElement("div");
+      roomsDiv.className = "sub-group-rooms open";
+
+      subHeader.addEventListener("click", function(e) {
+        var btn = e.target.closest("[data-a]");
+        if (btn) {
           e.stopPropagation();
-          handleDeleteRoom(mi, ri, r);
+          var a = btn.dataset.a;
+          var bmi = parseInt(btn.dataset.mi), bsi = parseInt(btn.dataset.si);
+          if (a === "edit-sub") {
+            editingSubCtx = { mi: bmi, si: bsi };
+            document.getElementById("input-editSubName").value = menus[bmi].subs[bsi].name;
+            openModal("modal-editSub");
+          } else if (a === "del-sub") {
+            doDeleteSub(bmi, bsi);
+          } else if (a === "add-room") {
+            pendingSubCtx = { mi: bmi, si: bsi };
+            document.getElementById("input-roomName").value = "";
+            openModal("modal-addRoom");
+          }
           return;
         }
-        openRoom(r);
+        var isOpen = roomsDiv.classList.toggle("open");
+        subChevron.classList.toggle("open", isOpen);
       });
-      roomsDiv.appendChild(item);
+
+      // 방
+      var rooms = s.rooms || [];
+      rooms.forEach(function(r, ri) {
+        if (filter && r.toLowerCase().indexOf(filter.toLowerCase()) === -1) return;
+        var item = document.createElement("div");
+        item.className = "room-item" + (currentRoom === r ? " active" : "");
+        item.innerHTML =
+          '<span class="room-dot"></span>' +
+          '<span class="room-name">' + r + '</span>' +
+          '<div class="row-actions">' +
+            '<button class="icon-btn danger" data-a="del-room" title="삭제">' + svgDelete() + '</button>' +
+          '</div>';
+        item.addEventListener("click", function(e) {
+          if (e.target.closest("[data-a]")) {
+            e.stopPropagation();
+            doDeleteRoom(mi, si, ri, r);
+            return;
+          }
+          openRoom(r);
+        });
+        roomsDiv.appendChild(item);
+      });
+
+      subGroup.appendChild(subHeader);
+      subGroup.appendChild(roomsDiv);
+      children.appendChild(subGroup);
     });
 
     group.appendChild(header);
-    group.appendChild(roomsDiv);
+    group.appendChild(children);
     box.appendChild(group);
   });
 }
 
-async function handleDeleteMenu(mi) {
-  if (!confirm("'" + menus[mi].name + "' 메뉴를 삭제할까요? (방도 모두 삭제됩니다)")) return;
-  const rooms = menus[mi].rooms || [];
-  for (var i = 0; i < rooms.length; i++) await remove(ref(db, "rooms/" + roomKey(rooms[i])));
+// ── CRUD ──
+async function doDeleteMenu(mi) {
+  if (!confirm("'" + menus[mi].name + "' 메뉴를 삭제할까요? (하위 항목도 모두 삭제됩니다)")) return;
+  var subs = menus[mi].subs || [];
+  for (var si = 0; si < subs.length; si++) {
+    var rooms = subs[si].rooms || [];
+    for (var ri = 0; ri < rooms.length; ri++) await remove(ref(db, "rooms/" + roomKey(rooms[ri])));
+  }
   menus.splice(mi, 1);
   await saveMenus();
   renderMenus();
   toast("메뉴가 삭제됐어요");
 }
 
-async function handleDeleteRoom(mi, ri, r) {
+async function doDeleteSub(mi, si) {
+  if (!confirm("'" + menus[mi].subs[si].name + "' 서브메뉴를 삭제할까요?")) return;
+  var rooms = menus[mi].subs[si].rooms || [];
+  for (var ri = 0; ri < rooms.length; ri++) await remove(ref(db, "rooms/" + roomKey(rooms[ri])));
+  menus[mi].subs.splice(si, 1);
+  await saveMenus();
+  renderMenus();
+  toast("서브메뉴가 삭제됐어요");
+}
+
+async function doDeleteRoom(mi, si, ri, r) {
   if (!confirm("'" + r + "' 방을 삭제할까요?")) return;
-  menus[mi].rooms.splice(ri, 1);
+  menus[mi].subs[si].rooms.splice(ri, 1);
   await saveMenus();
   await remove(ref(db, "rooms/" + roomKey(r)));
   if (currentRoom === r) {
@@ -555,295 +541,199 @@ async function handleDeleteRoom(mi, ri, r) {
   toast("방이 삭제됐어요");
 }
 
+// ── 방 열기 ──
 function openRoom(r) {
   currentRoom = r;
   document.getElementById("chat-title").textContent = r;
   document.getElementById("chat-title").style.color = "var(--text-primary)";
   document.getElementById("input-area").style.display = "flex";
-
   if (prevRoomRef) off(prevRoomRef);
-  const msgRef = ref(db, "rooms/" + roomKey(r));
+  var msgRef = ref(db, "rooms/" + roomKey(r));
   prevRoomRef = msgRef;
-
   onValue(msgRef, function(snap) {
-    const data = snap.exists() ? snap.val() : {};
-    const msgs = Object.entries(data)
+    var data = snap.exists() ? snap.val() : {};
+    var msgs = Object.entries(data)
       .map(function(e) { return Object.assign({}, e[1], { _key: e[0] }); })
       .sort(function(a, b) { return (a.ts || 0) - (b.ts || 0); });
     renderMsgs(msgs);
   });
-
   renderMenus();
 }
 
 function renderMsgs(msgs) {
-  const box = document.getElementById("messages");
+  var box = document.getElementById("messages");
   box.innerHTML = "";
   if (!msgs.length) {
     box.innerHTML = '<div style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:13px">아직 메시지가 없어요</div>';
     return;
   }
   msgs.forEach(function(m) {
-    const d = document.createElement("div");
+    var d = document.createElement("div");
     d.className = "tweet";
-
-    const img = document.createElement("img");
-    img.className = "avatar";
-    img.src = m.avatar || "";
-    img.alt = m.char;
+    var img = document.createElement("img");
+    img.className = "avatar"; img.src = m.avatar || ""; img.alt = m.char;
     img.onerror = function() { this.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='42' height='42'%3E%3Crect width='42' height='42' rx='21' fill='%23e2ddd8'/%3E%3C/svg%3E"; };
     img.addEventListener("click", function() { showProfile(m.char); });
-
-    const body = document.createElement("div");
-    body.className = "tweet-body";
-
-    const meta = document.createElement("div");
-    meta.className = "tweet-meta";
-    meta.innerHTML =
-      '<span class="tweet-name">' + m.char + '</span>' +
-      '<span class="tweet-id">@' + m.id + '</span>' +
-      '<span class="tweet-date">' + m.date + '</span>';
-
-    const text = document.createElement("div");
-    text.className = "tweet-text";
-    text.textContent = m.text;
-
-    const actions = document.createElement("div");
-    actions.className = "msg-actions";
-
-    const editBtn = document.createElement("button");
-    editBtn.className = "msg-btn";
-    editBtn.textContent = "수정";
+    var body = document.createElement("div"); body.className = "tweet-body";
+    var meta = document.createElement("div"); meta.className = "tweet-meta";
+    meta.innerHTML = '<span class="tweet-name">' + m.char + '</span><span class="tweet-id">@' + m.id + '</span><span class="tweet-date">' + m.date + '</span>';
+    var text = document.createElement("div"); text.className = "tweet-text"; text.textContent = m.text;
+    var actions = document.createElement("div"); actions.className = "msg-actions";
+    var eb = document.createElement("button"); eb.className = "msg-btn"; eb.textContent = "수정";
+    var db2 = document.createElement("button"); db2.className = "msg-btn danger"; db2.textContent = "삭제";
     (function(key, oldText) {
-      editBtn.addEventListener("click", function() { handleEditMsg(key, oldText); });
+      eb.addEventListener("click", function() {
+        var nt = prompt("수정", oldText); if (nt === null) return;
+        update(ref(db, "rooms/" + roomKey(currentRoom) + "/" + key), { text: nt }).then(function() { toast("수정됐어요"); });
+      });
+      db2.addEventListener("click", function() {
+        if (!confirm("삭제할까요?")) return;
+        remove(ref(db, "rooms/" + roomKey(currentRoom) + "/" + key)).then(function() { toast("삭제됐어요"); });
+      });
     })(m._key, m.text);
-
-    const delBtn = document.createElement("button");
-    delBtn.className = "msg-btn danger";
-    delBtn.textContent = "삭제";
-    (function(key) {
-      delBtn.addEventListener("click", function() { handleDeleteMsg(key); });
-    })(m._key);
-
-    actions.appendChild(editBtn);
-    actions.appendChild(delBtn);
-    body.appendChild(meta);
-    body.appendChild(text);
-    body.appendChild(actions);
-    d.appendChild(img);
-    d.appendChild(body);
-    box.appendChild(d);
+    actions.appendChild(eb); actions.appendChild(db2);
+    body.appendChild(meta); body.appendChild(text); body.appendChild(actions);
+    d.appendChild(img); d.appendChild(body); box.appendChild(d);
   });
   box.scrollTop = box.scrollHeight;
 }
 
-async function handleEditMsg(key, oldText) {
-  const newText = prompt("수정", oldText);
-  if (newText === null) return;
-  await update(ref(db, "rooms/" + roomKey(currentRoom) + "/" + key), { text: newText });
-  toast("수정됐어요");
-}
-
-async function handleDeleteMsg(key) {
-  if (!confirm("삭제할까요?")) return;
-  await remove(ref(db, "rooms/" + roomKey(currentRoom) + "/" + key));
-  toast("삭제됐어요");
-}
-
 async function sendMsg() {
   if (!currentRoom) return toast("방을 먼저 선택하세요");
-  const text = document.getElementById("msg-input").value.trim();
-  if (!text) return;
-  const ci = document.getElementById("char-select").value;
-  const c = chars[ci];
-  if (!c) return toast("캐릭터를 먼저 추가하세요");
-  const date = new Date();
-  const dateStr = (date.getMonth()+1) + "월 " + date.getDate() + "일";
-  await push(ref(db, "rooms/" + roomKey(currentRoom)), {
-    char: c.name, id: c.id, avatar: c.avatar,
-    text: text, date: dateStr, ts: Date.now()
-  });
+  var text = document.getElementById("msg-input").value.trim(); if (!text) return;
+  var ci = document.getElementById("char-select").value; var c = chars[ci]; if (!c) return toast("캐릭터를 먼저 추가하세요");
+  var d = new Date();
+  await push(ref(db, "rooms/" + roomKey(currentRoom)), { char: c.name, id: c.id, avatar: c.avatar, text: text, date: (d.getMonth()+1) + "월 " + d.getDate() + "일", ts: Date.now() });
   document.getElementById("msg-input").value = "";
 }
 
 function loadChars() {
-  const s = document.getElementById("char-select");
-  s.innerHTML = "";
-  chars.forEach(function(c, i) {
-    const o = document.createElement("option");
-    o.value = i;
-    o.textContent = c.name;
-    s.appendChild(o);
-  });
+  var s = document.getElementById("char-select"); s.innerHTML = "";
+  chars.forEach(function(c, i) { var o = document.createElement("option"); o.value = i; o.textContent = c.name; s.appendChild(o); });
 }
-
-function findAvatar(name) {
-  const c = chars.find(function(c) { return c.name === name; });
-  return c ? c.avatar : "";
-}
+function findAvatar(name) { var c = chars.find(function(c) { return c.name === name; }); return c ? c.avatar : ""; }
 
 function showProfile(name) {
-  const c = chars.find(function(c) { return c.name === name; });
-  if (!c) return;
+  var c = chars.find(function(c) { return c.name === name; }); if (!c) return;
   currentProfileChar = name;
   document.getElementById("profile-panel").classList.add("open");
-  const body = document.getElementById("profile-body");
+  var body = document.getElementById("profile-body");
   body.innerHTML =
-    '<img class="profile-avatar" src="' + (c.avatar || '') + '" onerror="this.src=\'data:image/svg+xml,%3Csvg xmlns=\\\'http://www.w3.org/2000/svg\\\' width=\\\'72\\\' height=\\\'72\\\'%3E%3Crect width=\\\'72\\\' height=\\\'72\\\' rx=\\\'36\\\' fill=\\\'%23e2ddd8\\\'/%3E%3C/svg%3E\'">' +
-    '<div class="profile-name">' + c.name + '</div>' +
-    '<div class="profile-id-text">@' + c.id + '</div>' +
-    '<div class="profile-label">바이오</div>' +
-    '<textarea class="profile-textarea" id="prof-bio">' + (c.bio || "") + '</textarea>' +
-    '<div class="profile-label">관계</div>' +
-    '<textarea class="profile-textarea" id="prof-rel">' + (c.rel || "") + '</textarea>' +
-    '<button id="btn-save-profile">저장</button>' +
-    '<button id="btn-delete-char">캐릭터 삭제</button>';
-
+    '<img class="profile-avatar" src="' + (c.avatar||'') + '" onerror="this.src=\'data:image/svg+xml,%3Csvg xmlns=\\\'http://www.w3.org/2000/svg\\\' width=\\\'72\\\' height=\\\'72\\\'%3E%3Crect width=\\\'72\\\' height=\\\'72\\\' rx=\\\'36\\\' fill=\\\'%23e2ddd8\\\'/%3E%3C/svg%3E\'">' +
+    '<div class="profile-name">' + c.name + '</div><div class="profile-id-text">@' + c.id + '</div>' +
+    '<div class="profile-label">바이오</div><textarea class="profile-textarea" id="prof-bio">' + (c.bio||"") + '</textarea>' +
+    '<div class="profile-label">관계</div><textarea class="profile-textarea" id="prof-rel">' + (c.rel||"") + '</textarea>' +
+    '<button id="btn-save-profile">저장</button><button id="btn-delete-char">캐릭터 삭제</button>';
   document.getElementById("btn-save-profile").addEventListener("click", async function() {
-    const c2 = chars.find(function(c) { return c.name === currentProfileChar; });
-    if (!c2) return;
-    c2.bio = document.getElementById("prof-bio").value;
-    c2.rel = document.getElementById("prof-rel").value;
-    await saveChars();
-    toast("저장됐어요");
+    var c2 = chars.find(function(c) { return c.name === currentProfileChar; }); if (!c2) return;
+    c2.bio = document.getElementById("prof-bio").value; c2.rel = document.getElementById("prof-rel").value;
+    await saveChars(); toast("저장됐어요");
   });
-
   document.getElementById("btn-delete-char").addEventListener("click", async function() {
     if (!confirm("'" + currentProfileChar + "' 캐릭터를 삭제할까요?")) return;
     chars = chars.filter(function(c) { return c.name !== currentProfileChar; });
-    await saveChars();
-    loadChars();
-    document.getElementById("profile-panel").classList.remove("open");
-    toast("캐릭터가 삭제됐어요");
+    await saveChars(); loadChars(); document.getElementById("profile-panel").classList.remove("open"); toast("캐릭터가 삭제됐어요");
   });
 }
 
-// 이벤트 연결
+// ── 이벤트 연결 ──
 document.getElementById("search-box").addEventListener("input", function(e) { renderMenus(e.target.value); });
 
-document.getElementById("btn-openAddMenu").addEventListener("click", function() {
-  document.getElementById("input-menuName").value = "";
-  openModal("modal-addMenu");
-});
+// 대메뉴 추가
+document.getElementById("btn-openAddMenu").addEventListener("click", function() { document.getElementById("input-menuName").value = ""; openModal("modal-addMenu"); });
 document.getElementById("btn-cancelAddMenu").addEventListener("click", function() { closeModal("modal-addMenu"); });
 document.getElementById("btn-confirmAddMenu").addEventListener("click", async function() {
-  const name = document.getElementById("input-menuName").value.trim();
-  if (!name) return;
-  menus.push({ name: name, rooms: [] });
-  await saveMenus();
-  renderMenus();
-  closeModal("modal-addMenu");
-  toast("메뉴가 추가됐어요");
+  var name = document.getElementById("input-menuName").value.trim(); if (!name) return;
+  menus.push({ name: name, subs: [] }); await saveMenus(); renderMenus(); closeModal("modal-addMenu"); toast("메뉴가 추가됐어요");
 });
-document.getElementById("input-menuName").addEventListener("keydown", function(e) {
-  if (e.key === "Enter") document.getElementById("btn-confirmAddMenu").click();
-});
+document.getElementById("input-menuName").addEventListener("keydown", function(e) { if (e.key==="Enter") document.getElementById("btn-confirmAddMenu").click(); });
 
+// 대메뉴 수정
 document.getElementById("btn-cancelEditMenu").addEventListener("click", function() { closeModal("modal-editMenu"); });
 document.getElementById("btn-confirmEditMenu").addEventListener("click", async function() {
-  const name = document.getElementById("input-editMenuName").value.trim();
-  if (!name) return;
-  menus[editingMenuIdx].name = name;
-  await saveMenus();
-  renderMenus();
-  closeModal("modal-editMenu");
-  toast("메뉴 이름이 수정됐어요");
+  var name = document.getElementById("input-editMenuName").value.trim(); if (!name) return;
+  menus[editingMenuIdx].name = name; await saveMenus(); renderMenus(); closeModal("modal-editMenu"); toast("메뉴 이름이 수정됐어요");
 });
-document.getElementById("input-editMenuName").addEventListener("keydown", function(e) {
-  if (e.key === "Enter") document.getElementById("btn-confirmEditMenu").click();
-});
+document.getElementById("input-editMenuName").addEventListener("keydown", function(e) { if (e.key==="Enter") document.getElementById("btn-confirmEditMenu").click(); });
 
+// 서브메뉴 추가
+document.getElementById("btn-cancelAddSub").addEventListener("click", function() { closeModal("modal-addSub"); });
+document.getElementById("btn-confirmAddSub").addEventListener("click", async function() {
+  var name = document.getElementById("input-subName").value.trim(); if (!name) return;
+  if (!menus[pendingMenuIdx].subs) menus[pendingMenuIdx].subs = [];
+  menus[pendingMenuIdx].subs.push({ name: name, rooms: [] });
+  await saveMenus(); renderMenus(); closeModal("modal-addSub"); toast("서브메뉴가 추가됐어요");
+});
+document.getElementById("input-subName").addEventListener("keydown", function(e) { if (e.key==="Enter") document.getElementById("btn-confirmAddSub").click(); });
+
+// 서브메뉴 수정
+document.getElementById("btn-cancelEditSub").addEventListener("click", function() { closeModal("modal-editSub"); });
+document.getElementById("btn-confirmEditSub").addEventListener("click", async function() {
+  var name = document.getElementById("input-editSubName").value.trim(); if (!name) return;
+  menus[editingSubCtx.mi].subs[editingSubCtx.si].name = name;
+  await saveMenus(); renderMenus(); closeModal("modal-editSub"); toast("서브메뉴 이름이 수정됐어요");
+});
+document.getElementById("input-editSubName").addEventListener("keydown", function(e) { if (e.key==="Enter") document.getElementById("btn-confirmEditSub").click(); });
+
+// 방 추가
 document.getElementById("btn-cancelAddRoom").addEventListener("click", function() { closeModal("modal-addRoom"); });
 document.getElementById("btn-confirmAddRoom").addEventListener("click", async function() {
-  const name = document.getElementById("input-roomName").value.trim();
-  if (!name) return;
-  if (!menus[pendingMenuIdx].rooms) menus[pendingMenuIdx].rooms = [];
-  menus[pendingMenuIdx].rooms.push(name);
-  await saveMenus();
-  renderMenus();
-  closeModal("modal-addRoom");
-  toast("방이 추가됐어요");
+  var name = document.getElementById("input-roomName").value.trim(); if (!name) return;
+  if (!menus[pendingSubCtx.mi].subs[pendingSubCtx.si].rooms) menus[pendingSubCtx.mi].subs[pendingSubCtx.si].rooms = [];
+  menus[pendingSubCtx.mi].subs[pendingSubCtx.si].rooms.push(name);
+  await saveMenus(); renderMenus(); closeModal("modal-addRoom"); toast("방이 추가됐어요");
 });
-document.getElementById("input-roomName").addEventListener("keydown", function(e) {
-  if (e.key === "Enter") document.getElementById("btn-confirmAddRoom").click();
-});
+document.getElementById("input-roomName").addEventListener("keydown", function(e) { if (e.key==="Enter") document.getElementById("btn-confirmAddRoom").click(); });
 
+// 캐릭터 추가
 document.getElementById("btn-add-char").addEventListener("click", function() {
-  document.getElementById("input-charName").value = "";
-  document.getElementById("input-charId").value = "";
-  document.getElementById("avatar-file").value = "";
-  document.getElementById("avatar-preview").classList.remove("show");
+  document.getElementById("input-charName").value = ""; document.getElementById("input-charId").value = "";
+  document.getElementById("avatar-file").value = ""; document.getElementById("avatar-preview").classList.remove("show");
   openModal("modal-addChar");
 });
 document.getElementById("btn-cancelAddChar").addEventListener("click", function() { closeModal("modal-addChar"); });
 document.getElementById("avatar-file").addEventListener("change", function() {
-  const file = this.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function() {
-    const img = document.getElementById("avatar-preview");
-    img.src = reader.result;
-    img.classList.add("show");
-  };
+  var file = this.files[0]; if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function() { var img = document.getElementById("avatar-preview"); img.src = reader.result; img.classList.add("show"); };
   reader.readAsDataURL(file);
 });
 document.getElementById("btn-confirmAddChar").addEventListener("click", async function() {
-  const name = document.getElementById("input-charName").value.trim();
-  const id = document.getElementById("input-charId").value.trim().replace("@", "");
-  const file = document.getElementById("avatar-file").files[0];
+  var name = document.getElementById("input-charName").value.trim();
+  var id = document.getElementById("input-charId").value.trim().replace("@","");
+  var file = document.getElementById("avatar-file").files[0];
   if (!name || !id) return toast("이름과 아이디를 입력하세요");
-  const avatar = await new Promise(function(res) {
-    if (!file) return res("");
-    const r = new FileReader();
-    r.onload = function() { res(r.result); };
-    r.readAsDataURL(file);
-  });
-  chars.push({ name: name, id: id, avatar: avatar });
-  await saveChars();
-  loadChars();
-  closeModal("modal-addChar");
-  toast("'" + name + "' 캐릭터가 추가됐어요");
+  var avatar = await new Promise(function(res) { if (!file) return res(""); var r = new FileReader(); r.onload = function() { res(r.result); }; r.readAsDataURL(file); });
+  chars.push({ name: name, id: id, avatar: avatar }); await saveChars(); loadChars(); closeModal("modal-addChar"); toast("'" + name + "' 캐릭터가 추가됐어요");
 });
 
+// 대화 업로드
 document.getElementById("btn-bulk-open").addEventListener("click", function() { openModal("modal-bulk"); });
 document.getElementById("btn-cancelBulk").addEventListener("click", function() { closeModal("modal-bulk"); });
 document.getElementById("btn-confirmBulk").addEventListener("click", async function() {
   if (!currentRoom) return toast("방을 먼저 선택하세요");
-  const raw = document.getElementById("input-bulk").value;
-  const blocks = raw.trim().split(/\n\n+/);
-  let count = 0;
-  for (let i = 0; i < blocks.length; i++) {
-    const lines = blocks[i].split("\n");
+  var raw = document.getElementById("input-bulk").value;
+  var blocks = raw.trim().split(/\n\n+/); var count = 0;
+  for (var i = 0; i < blocks.length; i++) {
+    var lines = blocks[i].split("\n");
     if (lines.length >= 4) {
-      await push(ref(db, "rooms/" + roomKey(currentRoom)), {
-        char: lines[0],
-        id: lines[1].replace("@", ""),
-        date: lines[2],
-        text: lines.slice(3).join("\n"),
-        avatar: findAvatar(lines[0]),
-        ts: Date.now() + count
-      });
+      await push(ref(db, "rooms/" + roomKey(currentRoom)), { char: lines[0], id: lines[1].replace("@",""), date: lines[2], text: lines.slice(3).join("\n"), avatar: findAvatar(lines[0]), ts: Date.now() + count });
       count++;
     }
   }
-  closeModal("modal-bulk");
-  document.getElementById("input-bulk").value = "";
-  toast(count + "개의 메시지를 업로드했어요");
+  closeModal("modal-bulk"); document.getElementById("input-bulk").value = ""; toast(count + "개의 메시지를 업로드했어요");
 });
 
+// 전송
 document.getElementById("btn-send").addEventListener("click", sendMsg);
-document.getElementById("msg-input").addEventListener("keydown", function(e) {
-  if (e.key === "Enter") sendMsg();
-});
+document.getElementById("msg-input").addEventListener("keydown", function(e) { if (e.key==="Enter") sendMsg(); });
 
-document.getElementById("btn-close-profile").addEventListener("click", function() {
-  document.getElementById("profile-panel").classList.remove("open");
-});
+// 프로필 닫기
+document.getElementById("btn-close-profile").addEventListener("click", function() { document.getElementById("profile-panel").classList.remove("open"); });
 
-document.querySelectorAll(".modal-overlay").forEach(function(overlay) {
-  overlay.addEventListener("click", function(e) {
-    if (e.target === overlay) overlay.classList.remove("open");
-  });
+// 모달 외부 클릭
+document.querySelectorAll(".modal-overlay").forEach(function(o) {
+  o.addEventListener("click", function(e) { if (e.target === o) o.classList.remove("open"); });
 });
 
 loadAll();
