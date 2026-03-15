@@ -2,178 +2,47 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<title>RP Archive Chat</title>
+<title>RP Archive</title>
 
-<!-- Firebase (실시간 채팅용) -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <style>
 *{box-sizing:border-box}
-body{
-margin:0;
-font-family:Arial, Helvetica, sans-serif;
-background:#f5f8fa;
-height:100vh;
-display:flex;
-overflow:hidden;
-}
+body{margin:0;font-family:Arial;background:#f5f8fa;height:100vh;display:flex;overflow:hidden}
 
-/* LEFT MENU */
-.sidebar{
-width:260px;
-background:white;
-border-right:1px solid #ddd;
-padding:16px;
-overflow-y:auto;
-}
+.sidebar{width:260px;background:white;border-right:1px solid #ddd;padding:16px;overflow-y:auto}
+.menu-title{font-weight:bold;margin:10px 0 6px 0}
+.menu-item{padding:6px 8px;border-radius:6px;cursor:pointer;margin-bottom:2px;display:flex;justify-content:space-between}
+.menu-item:hover{background:#eef2ff}
+.submenu{margin-left:12px;display:none}
+.menu-item.open + .submenu{display:block}
+.new-badge{background:red;color:white;font-size:10px;padding:2px 6px;border-radius:10px}
 
-.menu-title{
-font-weight:bold;
-margin:10px 0 6px 0;
-}
+.main{flex:1;display:flex;flex-direction:column;height:100%}
+.header{padding:14px 18px;border-bottom:1px solid #ddd;background:white;font-weight:bold;display:flex;justify-content:space-between}
 
-.menu-item{
-padding:6px 8px;
-border-radius:6px;
-cursor:pointer;
-margin-bottom:2px;
-display:flex;
-justify-content:space-between;
-}
+.search{border:1px solid #ccc;border-radius:8px;padding:4px 8px}
 
-.menu-item:hover{
-background:#eef2ff;
-}
+.messages{flex:1;overflow-y:auto;padding:20px}
+.message{display:flex;margin-bottom:16px}
+.avatar{width:42px;height:42px;border-radius:50%;margin-right:10px;object-fit:cover}
+.bubble{background:white;padding:10px 14px;border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,0.1);max-width:520px}
+.name{font-weight:bold;margin-right:6px}
+.time{color:#777;font-size:12px}
+.text{margin-top:4px;line-height:1.4}
+.image{margin-top:6px;border-radius:10px;max-width:260px}
 
-.submenu{
-margin-left:12px;
-display:none;
-}
+.input-area{border-top:1px solid #ddd;background:white;padding:10px;display:flex;align-items:center}
+.character-picker{margin-right:8px;display:flex;align-items:center}
+.char{width:36px;height:36px;border-radius:50%;border:2px solid #ddd;margin-right:6px;cursor:pointer;object-fit:cover}
+.char.selected{border:2px solid red}
+.add-char{width:36px;height:36px;border-radius:50%;border:2px dashed #aaa;display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:bold}
 
-.menu-item.open + .submenu{
-display:block;
-}
+.chat-input{flex:1;border-radius:12px;border:1px solid #ccc;padding:8px 10px}
+.send{margin-left:8px;border:none;background:#1da1f2;color:white;padding:8px 14px;border-radius:10px;cursor:pointer}
 
-.new-badge{
-background:red;
-color:white;
-font-size:10px;
-padding:2px 6px;
-border-radius:10px;
-}
-
-/* RIGHT AREA */
-.main{
-flex:1;
-display:flex;
-flex-direction:column;
-height:100%;
-}
-
-.header{
-padding:14px 18px;
-border-bottom:1px solid #ddd;
-background:white;
-font-weight:bold;
-}
-
-.messages{
-flex:1;
-overflow-y:auto;
-padding:20px;
-}
-
-.message{
-display:flex;
-margin-bottom:16px;
-}
-
-.avatar{
-width:42px;
-height:42px;
-border-radius:50%;
-margin-right:10px;
-}
-
-.bubble{
-background:white;
-padding:10px 14px;
-border-radius:14px;
-box-shadow:0 1px 2px rgba(0,0,0,0.1);
-max-width:520px;
-}
-
-.name{
-font-weight:bold;
-margin-right:6px;
-}
-
-.time{
-color:#777;
-font-size:12px;
-}
-
-.text{
-margin-top:4px;
-line-height:1.4;
-}
-
-/* INPUT AREA */
-.input-area{
-border-top:1px solid #ddd;
-background:white;
-padding:10px;
-display:flex;
-align-items:center;
-}
-
-.character-picker{
-margin-right:8px;
-display:flex;
-align-items:center;
-}
-
-.char{
-width:36px;
-height:36px;
-border-radius:50%;
-border:2px solid #ddd;
-margin-right:6px;
-cursor:pointer;
-}
-
-.char.selected{
-border:2px solid red;
-}
-
-.add-char{
-width:36px;
-height:36px;
-border-radius:50%;
-border:2px dashed #aaa;
-display:flex;
-align-items:center;
-justify-content:center;
-cursor:pointer;
-}
-
-.chat-input{
-flex:1;
-border-radius:12px;
-border:1px solid #ccc;
-padding:8px 10px;
-}
-
-.send{
-margin-left:8px;
-border:none;
-background:#1da1f2;
-color:white;
-padding:8px 14px;
-border-radius:10px;
-cursor:pointer;
-}
+.upload{margin-left:6px}
 
 </style>
 </head>
@@ -181,31 +50,32 @@ cursor:pointer;
 <body>
 
 <div class="sidebar">
-
 <div class="menu-title">설정</div>
 
 <div class="menu-title">역극</div>
 
 <div class="menu-item" onclick="toggleMenu(this)">성장 전</div>
 <div class="submenu">
-<div class="menu-item" onclick="openRoom('growth_before_dorm')">기숙사 <span id="new-growth_before_dorm" class="new-badge" style="display:none">NEW</span></div>
-<div class="menu-item" onclick="openRoom('growth_before_school')">학교 <span id="new-growth_before_school" class="new-badge" style="display:none">NEW</span></div>
+<div class="menu-item" onclick="openRoom('before_dorm')">기숙사 <span id="new-before_dorm" class="new-badge" style="display:none">NEW</span></div>
+<div class="menu-item" onclick="openRoom('before_school')">학교 <span id="new-before_school" class="new-badge" style="display:none">NEW</span></div>
 </div>
 
 <div class="menu-item" onclick="toggleMenu(this)">성장 후</div>
 <div class="submenu">
-<div class="menu-item" onclick="openRoom('growth_after_work')">회사 <span id="new-growth_after_work" class="new-badge" style="display:none">NEW</span></div>
-<div class="menu-item" onclick="openRoom('growth_after_home')">집 <span id="new-growth_after_home" class="new-badge" style="display:none">NEW</span></div>
+<div class="menu-item" onclick="openRoom('after_work')">회사 <span id="new-after_work" class="new-badge" style="display:none">NEW</span></div>
+<div class="menu-item" onclick="openRoom('after_home')">집 <span id="new-after_home" class="new-badge" style="display:none">NEW</span></div>
 </div>
 
 <div class="menu-title">썰</div>
 <div class="menu-title">DM</div>
-
 </div>
 
 <div class="main">
 
-<div class="header" id="roomTitle">기숙사</div>
+<div class="header">
+<span id="roomTitle">기숙사</span>
+<input id="searchBox" class="search" placeholder="대화 검색" oninput="renderMessages()">
+</div>
 
 <div class="messages" id="messages"></div>
 
@@ -215,6 +85,8 @@ cursor:pointer;
 
 <input id="chatInput" class="chat-input" placeholder="메시지 입력">
 
+<input type="file" id="imageInput" class="upload" accept="image/*">
+
 <button class="send" onclick="sendMessage()">전송</button>
 
 </div>
@@ -223,180 +95,177 @@ cursor:pointer;
 
 <script>
 
-/* =======================
-   FIREBASE 설정
-======================= */
-
-const firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  authDomain: "YOUR_DOMAIN",
-  databaseURL: "YOUR_DB_URL",
-  projectId: "YOUR_ID",
-  storageBucket: "",
-  messagingSenderId: "",
-  appId: ""
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-
-/* ======================= */
-
-let currentRoom = "growth_before_dorm";
-let currentChar = null;
-
-let characters = [];
-
-function toggleMenu(el){
-el.classList.toggle("open");
+const firebaseConfig={
+apiKey:"AIzaSyA5QG4OWzXc2aTpFqxUwJERkC3_gUmCIgY",
+authDomain:"siseo-archive.firebaseapp.com",
+databaseURL:"https://siseo-archive-default-rtdb.firebaseio.com",
+projectId:"siseo-archive",
+storageBucket:"siseo-archive.firebasestorage.app",
+messagingSenderId:"450409807533",
+appId:"1:450409807533:web:d7cc1869fab0043b24d024"
 }
 
+firebase.initializeApp(firebaseConfig)
+const db=firebase.database()
+
+let currentRoom="before_dorm"
+let currentChar=null
+let characters=JSON.parse(localStorage.getItem('rp_characters')||'[]')
+let roomMessages=[]
+
+function toggleMenu(el){el.classList.toggle("open")}
+
 function openRoom(room){
-
-currentRoom = room;
-
-document.getElementById("roomTitle").innerText = room;
-
-listenMessages();
-
-hideNew(room);
-
+currentRoom=room
+roomMessages=[]
+document.getElementById("roomTitle").innerText=room
+listenMessages()
+hideNew(room)
 }
 
 function hideNew(room){
-
-const badge = document.getElementById("new-"+room);
-if(badge) badge.style.display="none";
-
+const badge=document.getElementById("new-"+room)
+if(badge) badge.style.display="none"
 }
 
-/* =======================
-   캐릭터 시스템
-======================= */
+function markNew(room){
+if(room===currentRoom) return
+const badge=document.getElementById("new-"+room)
+if(badge) badge.style.display="inline"
+}
+
+function saveCharacters(){
+localStorage.setItem('rp_characters',JSON.stringify(characters))
+}
 
 function renderCharacters(){
-
-const box=document.getElementById("charPicker");
-box.innerHTML="";
+const box=document.getElementById("charPicker")
+box.innerHTML=""
 
 characters.forEach(c=>{
+const img=document.createElement("img")
+img.src=c.avatar
+img.className="char"
+if(currentChar===c.name) img.classList.add("selected")
+img.onclick=()=>{currentChar=c.name;renderCharacters()}
+box.appendChild(img)
+})
 
-const img=document.createElement("img");
-img.src=c.avatar;
-img.className="char";
-
-if(currentChar===c.name) img.classList.add("selected");
-
-img.onclick=()=>{
-
-currentChar=c.name;
-renderCharacters();
-
-};
-
-box.appendChild(img);
-
-});
-
-const add=document.createElement("div");
-add.className="add-char";
-add.innerText="+";
-add.onclick=addCharacter;
-
-box.appendChild(add);
-
+const add=document.createElement("div")
+add.className="add-char"
+add.innerText="+"
+add.onclick=addCharacter
+box.appendChild(add)
 }
 
 function addCharacter(){
+const name=prompt("캐릭터 이름")
+if(!name) return
 
-const name=prompt("캐릭터 이름");
-if(!name) return;
+const input=document.createElement("input")
+input.type="file"
+input.accept="image/*"
 
-const avatar=prompt("프로필 이미지 URL");
-
-characters.push({name,avatar});
-
-if(!currentChar) currentChar=name;
-
-renderCharacters();
-
+input.onchange=()=>{
+const file=input.files[0]
+const reader=new FileReader()
+reader.onload=e=>{
+characters.push({name,avatar:e.target.result})
+saveCharacters()
+if(!currentChar) currentChar=name
+renderCharacters()
+}
+reader.readAsDataURL(file)
 }
 
-/* =======================
-   메시지 시스템
-======================= */
+input.click()
+}
 
 function sendMessage(){
 
-const text=document.getElementById("chatInput").value.trim();
+const text=document.getElementById("chatInput").value.trim()
+const file=document.getElementById("imageInput").files[0]
 
-if(!text || !currentChar) return;
+if(!currentChar) return
 
-const msg={
-char:currentChar,
-text:text,
-time:Date.now()
-};
+if(file){
+const reader=new FileReader()
+reader.onload=e=>{
+pushMessage(text,e.target.result)
+}
+reader.readAsDataURL(file)
+}else{
+pushMessage(text,null)
+}
 
-db.ref("rooms/"+currentRoom).push(msg);
+document.getElementById("chatInput").value=""
+document.getElementById("imageInput").value=""
+}
 
+function pushMessage(text,image){
 
-document.getElementById("chatInput").value="";
+const msg={char:currentChar,text:text,image:image,time:Date.now()}
 
+db.ref("rooms/"+currentRoom).push(msg)
 }
 
 function listenMessages(){
 
-const box=document.getElementById("messages");
+const box=document.getElementById("messages")
+box.innerHTML=""
 
-box.innerHTML="";
+const ref=db.ref("rooms/"+currentRoom)
+ref.off()
 
-db.ref("rooms/"+currentRoom).off();
-
-
-db.ref("rooms/"+currentRoom).on("child_added",snap=>{
-
-const m=snap.val();
-
-addMessage(m);
-
-});
+ref.on("child_added",snap=>{
+const m=snap.val()
+roomMessages.push(m)
+renderMessages()
+})
 
 }
 
-function addMessage(m){
+function renderMessages(){
 
-const box=document.getElementById("messages");
+const box=document.getElementById("messages")
+box.innerHTML=""
 
-const div=document.createElement("div");
+const search=document.getElementById("searchBox").value.toLowerCase()
 
-div.className="message";
+roomMessages.forEach(m=>{
 
-const char=characters.find(c=>c.name===m.char);
+if(search && !(m.text||"").toLowerCase().includes(search)) return
 
-const avatar=char?char.avatar:"";
+const div=document.createElement("div")
+div.className="message"
 
-const time=new Date(m.time).toLocaleTimeString();
+const char=characters.find(c=>c.name===m.char)
+const avatar=char?char.avatar:""
+
+const time=new Date(m.time).toLocaleTimeString()
+
+let imgHTML=""
+if(m.image) imgHTML=`<img class="image" src="${m.image}">`
 
 
 div.innerHTML=`
 <img class="avatar" src="${avatar}">
 <div class="bubble">
 <div><span class="name">${m.char}</span><span class="time">${time}</span></div>
-<div class="text">${m.text}</div>
+<div class="text">${m.text||""}</div>
+${imgHTML}
 </div>
-`;
+`
 
-box.appendChild(div);
+box.appendChild(div)
+})
 
-box.scrollTop=box.scrollHeight;
+box.scrollTop=box.scrollHeight
 
 }
 
-/* ======================= */
-
-renderCharacters();
-listenMessages();
+renderCharacters()
+listenMessages()()
 
 </script>
 
